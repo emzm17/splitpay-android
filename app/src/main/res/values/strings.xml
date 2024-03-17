@@ -16,4 +16,9 @@
     <string name="txt_login_subheader">Login to access your bills</string>
     <string name="txt_login">Login</string>
     <string name="name">Name</string>
+    <string name="groups"><font color="#2196F3">Groups</font></string>
+    <string name="friends"><font color="#2196F3">Friends</font></string>
+    <string name="profile"><font color="#2196F3">Profile</font></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

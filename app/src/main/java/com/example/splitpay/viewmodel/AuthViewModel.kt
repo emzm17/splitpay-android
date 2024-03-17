@@ -2,6 +2,7 @@ package com.example.splitpay.viewmodel
 
 import android.provider.ContactsContract.CommonDataKinds.Email
 import android.text.TextUtils
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +21,7 @@ class AuthViewModel : ViewModel() {
     val _userSigninResponseLiveData: LiveData<NetworkResult<UserSigninResponse>>
         get() = UserRepository.userSigninResponseLiveData
 
+
     fun registerUser(userSignupRequest: UserSignupRequest) {
         viewModelScope.launch {
             UserRepository.registerUser(userSignupRequest)
@@ -29,6 +31,7 @@ class AuthViewModel : ViewModel() {
     fun loginUser(userSigninRequest: UserSigninRequest) {
         viewModelScope.launch {
             UserRepository.loginUser(userSigninRequest)
+
         }
     }
 

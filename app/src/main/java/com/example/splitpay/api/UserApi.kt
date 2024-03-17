@@ -21,10 +21,10 @@ interface UserApi {
 
 
   @GET("users/")
-  suspend fun getAllUser():Response<List<UserResponse>>
+  suspend fun getAllUser():Response<ArrayList<UserResponse>>
 
   @GET("users/friends")
-  suspend fun getAllFriends():Response<List<UserResponse>>
+  suspend fun getAllFriends():Response<ArrayList<UserResponse>>
 
 
 

@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.splitpay.databinding.FragmentLoginBinding
-import com.example.splitpay.databinding.FragmentRegisterBinding
 import com.example.splitpay.models.UserSigninRequest
-import com.example.splitpay.models.UserSignupRequest
+import com.example.splitpay.models.UserSigninResponse
+import com.example.splitpay.utils.Constants
+
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.AuthViewModel
@@ -29,14 +29,14 @@ class LoginFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding= FragmentLoginBinding.inflate(inflater,container,false)
-        tokenManager=TokenManager(requireContext())
+
         return  binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         authViewModel= ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
-        observers()
+        tokenManager=TokenManager(requireContext())
         binding.btnSignUp.setOnClickListener {
             findNavController().popBackStack()
 
@@ -45,29 +45,53 @@ class LoginFragment : Fragment() {
             val validationResult= validateUserInput()
             if(validationResult.first){
                 authViewModel.loginUser(getUserSigninRequest())
+
             }
             else{
                  binding.txtError.text=validationResult.second
             }
+
         }
+        observers()
     }
     private fun observers(){
-        authViewModel._userSigninResponseLiveData.observe(viewLifecycleOwner, Observer {
-            binding.progressBar.isVisible=false
-            when(it){
-                is NetworkResult.Success->{
-                    tokenManager.saveToken(it.data?.result!!)
-                    findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+       authViewModel._userSigninResponseLiveData.observe(viewLifecycleOwner) { i->
+//           Log.i("MICKY",i.data)
+//           saveCreds(i.data!!)
+            binding.progressBar.isVisible = false
+            when (i) {
+                is NetworkResult.Success -> {
+                    tokenManager.saveToken(i.data?.result.toString(),
+                        i.data!!.user?.email.toString(), i.data.user?.userId, i.data.user?.name.toString()
+                    )
+//                    Log.i(TAG,tokenManager.getToken().toString())
+
+                  findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+
                 }
-                is NetworkResult.Error->{
-                    binding.txtError.text=it.message
+
+                is NetworkResult.Error -> {
+                    binding.txtError.text = i.message
                 }
-                is NetworkResult.Loading->{
-                    binding.progressBar.isVisible=true
+
+                is NetworkResult.Loading -> {
+                    binding.progressBar.isVisible = true
                 }
             }
-        })
+        }
     }
+
+//    private fun saveCreds(response:UserSigninResponse) {
+//           Constants.USER_NAME=response.user!!.name.toString()
+//           Constants.EMAIL= response.user.email.toString()
+//           Constants.TOTAL_AMOUNT=response.user.totalAmount.toString()
+//           Constants.TOTAL_OWED=response.user.totalOwed.toString()
+//           Constants.TOTAL_OWE=response.user.totalOwe.toString()
+//           Constants.FRIEND_LIST=response.user.friendList.toString()
+//           Constants.USER_ID=response.user.userId.toString()
+//           Constants.PASSWORD=response.user.password.toString()
+//    }
+
     private fun validateUserInput(): Pair<Boolean, String> {
         val email=binding.txtEmail.text.toString()
         val password=binding.txtPassword.text.toString()
