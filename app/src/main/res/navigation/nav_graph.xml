@@ -52,10 +52,44 @@
         android:id="@+id/groupFragment"
         android:name="com.example.splitpay.GroupFragment"
         android:label="fragment_group"
-        tools:layout="@layout/fragment_group" />
+        tools:layout="@layout/fragment_group" >
+        <action
+            android:id="@+id/action_groupFragment_to_expenseFragment"
+            app:destination="@id/expenseFragment" />
+        <action
+            android:id="@+id/action_groupFragment_to_createGroupFragment"
+            app:destination="@id/createGroupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.splitpay.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/expenseFragment"
+        android:name="com.example.splitpay.ExpenseFragment"
+        android:label="fragment_expense"
+        tools:layout="@layout/fragment_expense" >
+        <action
+            android:id="@+id/action_expenseFragment_to_createExpenseFragment"
+            app:destination="@id/createExpenseFragment" />
+        <action
+            android:id="@+id/action_expenseFragment_to_detailExpenseFragment"
+            app:destination="@id/detailExpenseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createGroupFragment"
+        android:name="com.example.splitpay.CreateGroupFragment"
+        android:label="fragment_create_group"
+        tools:layout="@layout/fragment_create_group" />
+    <fragment
+        android:id="@+id/createExpenseFragment"
+        android:name="com.example.splitpay.CreateExpenseFragment"
+        android:label="fragment_create_expense"
+        tools:layout="@layout/fragment_create_expense" />
+    <fragment
+        android:id="@+id/detailExpenseFragment"
+        android:name="com.example.splitpay.DetailExpenseFragment"
+        android:label="fragment_detail_expense"
+        tools:layout="@layout/fragment_detail_expense" />
 </navigation>

@@ -86,7 +86,7 @@ class MainFragment : Fragment() {
 
         userViewModel.getAllUsers()
         userViewModel._getAllUser.observe(viewLifecycleOwner) { it ->
-            Log.i(TAG, it.data.toString())
+//            Log.i(TAG, it.data.toString())
             users.clear()
                 if(it.data!=null) {
                     users.addAll(it.data!!)

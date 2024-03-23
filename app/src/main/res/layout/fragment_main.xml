@@ -6,16 +6,6 @@
     android:padding="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent" android:layout_height="0dp">
-      
-     <androidx.appcompat.widget.Toolbar
-         android:id="@+id/toolbar"
-         android:layout_width="match_parent"
-         android:layout_height="?attr/actionBarSize"
-         android:background="?attr/colorPrimary"
-         app:layout_scrollFlags="enterAlways|scroll"/>
-  </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:text="Dashboard"

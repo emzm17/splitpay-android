@@ -3,6 +3,8 @@ package com.example.splitpay.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.GroupResponse
 import com.example.splitpay.models.UserResponse
 import com.example.splitpay.models.UserSigninResponse
 import com.example.splitpay.models.UserSignupResponse
@@ -17,7 +19,17 @@ class UserViewModel:ViewModel() {
         get() = AuthUserRepository.getAllUserLiveData
     val _getUser: LiveData<NetworkResult<ArrayList<UserResponse>>>
         get() = AuthUserRepository.getUserLiveData
+    val _getAllUserGroup:LiveData<NetworkResult<ArrayList<GroupResponse>>>
+        get() = AuthUserRepository.getAllUserGroupsLiveData
 
+    val _getAllExpense:LiveData<NetworkResult<ArrayList<ExpenseResponse>>>
+        get() = AuthUserRepository.getAllExpenseLiveData
+
+    val _getAllGroup:LiveData<NetworkResult<ArrayList<GroupResponse>>>
+        get() = AuthUserRepository.getAllGroupsLiveData
+
+    val _getparticularGroup:LiveData<NetworkResult<GroupResponse>>
+        get()=AuthUserRepository.getparticularGroup
 
 
     fun getAllUsers(){
@@ -29,6 +41,29 @@ class UserViewModel:ViewModel() {
     fun getUsers(){
         viewModelScope.launch {
             AuthUserRepository.getUsers()
+        }
+    }
+    fun getGroups(){
+        viewModelScope.launch {
+             AuthUserRepository.getGroups()
+        }
+    }
+
+    fun getExpenses(id:Int){
+        viewModelScope.launch {
+             AuthUserRepository.getExpense(id)
+        }
+    }
+
+    fun getAllGroups(){
+        viewModelScope.launch {
+             AuthUserRepository.getallGroups()
+        }
+    }
+
+    fun getparticularGroup(id:Int){
+        viewModelScope.launch {
+             AuthUserRepository.getparticularGroups(id)
         }
     }
 

@@ -14,28 +14,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:fontFamily="@font/sf_pro_display_bold"
-        android:text="Groups"
-        android:textSize="28sp"
+        android:text="Expense"
+        android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/group_list"
+        android:id="@+id/expense_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:listitem="@layout/group_item" />
-
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/expense_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         app:backgroundTint="#8E70C5"
-        android:id="@+id/add_group"
+        android:id="@+id/add_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:fabSize="normal"
