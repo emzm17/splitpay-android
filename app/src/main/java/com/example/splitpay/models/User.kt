@@ -2,10 +2,7 @@ package com.example.splitpay.models
 
 import com.google.gson.annotations.SerializedName
 
-data class UserSigninResponse(
-
-	@field:SerializedName("result")
-	val result: String? = null,
+data class User(
 
 	@field:SerializedName("user_id")
 	val userId: Int? = null,

@@ -81,12 +81,20 @@
         android:id="@+id/createGroupFragment"
         android:name="com.example.splitpay.CreateGroupFragment"
         android:label="fragment_create_group"
-        tools:layout="@layout/fragment_create_group" />
+        tools:layout="@layout/fragment_create_group" >
+        <action
+            android:id="@+id/action_createGroupFragment_to_groupFragment"
+            app:destination="@id/groupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createExpenseFragment"
         android:name="com.example.splitpay.CreateExpenseFragment"
         android:label="fragment_create_expense"
-        tools:layout="@layout/fragment_create_expense" />
+        tools:layout="@layout/fragment_create_expense">
+        <action
+            android:id="@+id/action_createExpenseFragment_to_groupFragment"
+            app:destination="@id/groupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailExpenseFragment"
         android:name="com.example.splitpay.DetailExpenseFragment"

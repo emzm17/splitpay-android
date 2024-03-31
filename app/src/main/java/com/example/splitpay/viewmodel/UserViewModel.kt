@@ -3,8 +3,11 @@ package com.example.splitpay.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.splitpay.models.ExpenseRequest
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
+import com.example.splitpay.models.User
 import com.example.splitpay.models.UserResponse
 import com.example.splitpay.models.UserSigninResponse
 import com.example.splitpay.models.UserSignupResponse
@@ -17,7 +20,7 @@ class UserViewModel:ViewModel() {
 
     val _getAllUser: LiveData<NetworkResult<ArrayList<UserResponse>>>
         get() = AuthUserRepository.getAllUserLiveData
-    val _getUser: LiveData<NetworkResult<ArrayList<UserResponse>>>
+    val _getUser: LiveData<NetworkResult<ArrayList<User>>>
         get() = AuthUserRepository.getUserLiveData
     val _getAllUserGroup:LiveData<NetworkResult<ArrayList<GroupResponse>>>
         get() = AuthUserRepository.getAllUserGroupsLiveData
@@ -30,7 +33,14 @@ class UserViewModel:ViewModel() {
 
     val _getparticularGroup:LiveData<NetworkResult<GroupResponse>>
         get()=AuthUserRepository.getparticularGroup
+    val _getparticularUser:LiveData<NetworkResult<UserResponse>>
+        get()=AuthUserRepository.getparticularUser
 
+    val _createGroupLiveData:LiveData<NetworkResult<GroupRequest>>
+        get() = AuthUserRepository.usercreateGroup
+
+    val _createExpenseLiveData:LiveData<NetworkResult<ExpenseRequest>>
+        get() = AuthUserRepository.usercreateExpense
 
     fun getAllUsers(){
          viewModelScope.launch {
@@ -64,6 +74,24 @@ class UserViewModel:ViewModel() {
     fun getparticularGroup(id:Int){
         viewModelScope.launch {
              AuthUserRepository.getparticularGroups(id)
+        }
+    }
+
+    fun getparticularUser(id:Int){
+        viewModelScope.launch {
+             AuthUserRepository.getparticularUser(id)
+        }
+    }
+
+    fun createGroup(groupRequest: GroupRequest){
+        viewModelScope.launch {
+             AuthUserRepository.createGroup(groupRequest)
+        }
+    }
+
+    fun createExpense(expenseRequest: ExpenseRequest){
+        viewModelScope.launch {
+            AuthUserRepository.createExpense(expenseRequest)
         }
     }
 

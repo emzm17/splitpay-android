@@ -7,9 +7,6 @@ data class UserResponse(
 	@field:SerializedName("total_owed")
 	val totalOwed: String? = null,
 
-	@field:SerializedName("password")
-	val password: String? = null,
-
 	@field:SerializedName("friend_list")
 	val friendList: List<Int?>? = null,
 

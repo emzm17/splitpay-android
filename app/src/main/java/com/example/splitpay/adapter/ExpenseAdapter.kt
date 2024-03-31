@@ -10,7 +10,8 @@ import com.example.splitpay.models.GroupResponse
 import com.example.splitpay.utils.Constants.userNamemap
 
 
-class ExpenseAdapter(private val onItemClick: (ExpenseResponse) -> Unit) :ListAdapter<ExpenseResponse,ExpenseAdapter.ExpenseViewHolder>(ComparatorDiffUtil()){
+class ExpenseAdapter(private val onItemClick: (ExpenseResponse) -> Unit) :
+    ListAdapter<ExpenseResponse,ExpenseAdapter.ExpenseViewHolder>(ComparatorDiffUtil()){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

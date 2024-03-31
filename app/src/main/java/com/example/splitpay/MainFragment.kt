@@ -84,35 +84,16 @@ class MainFragment : Fragment() {
 
         }
 
-        userViewModel.getAllUsers()
-        userViewModel._getAllUser.observe(viewLifecycleOwner) { it ->
-//            Log.i(TAG, it.data.toString())
-            users.clear()
+        userViewModel.getparticularUser(tokenManager.getUserId())
+        userViewModel._getparticularUser.observe(viewLifecycleOwner) { it ->
+//            Log.i(TAG, it.data.toString()
                 if(it.data!=null) {
-                    users.addAll(it.data!!)
-                    users.forEach {
-                        if (it.userId==tokenManager.getUserId()) {
-
-
-                            binding.totalAmountTv.text = "₹ ${it.totalAmount}"
-                            binding.totalOweTv.text = "₹ ${it.totalOwe}"
-                            binding.totalOwedTv.text = "₹ ${it.totalOwed}"
-                            binding.usernameTv.text = "Welcome back,${it.name}"
+                            binding.totalAmountTv.text = "₹ ${it.data.totalAmount}"
+                            binding.totalOweTv.text = "₹ ${it.data.totalOwe}"
+                            binding.totalOwedTv.text = "₹ ${it.data.totalOwed}"
+                            binding.usernameTv.text = "Welcome back,${it.data.name}"
                         }
                     }
-                }
-
-        }
-//            binding.friendsBtn.setOnClickListener {
-//                findNavController().navigate(R.id.action_mainFragment_to_friendsFragment)
-//            }
-//            binding.groupsBtn.setOnClickListener {
-//                findNavController().navigate(R.id.action_mainFragment_to_groupFragment)
-//            }
-//            binding.profileBtn.setOnClickListener {
-//                findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
-//            }
-
 
     }
     override fun onDestroyView() {

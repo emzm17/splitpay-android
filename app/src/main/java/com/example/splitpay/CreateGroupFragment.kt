@@ -5,55 +5,95 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.splitpay.adapter.FriendAdapter
+import com.example.splitpay.databinding.FragmentCreateGroupBinding
+import com.example.splitpay.models.GroupRequest
+import com.example.splitpay.models.User
+import com.example.splitpay.utils.NetworkResult
+import com.example.splitpay.utils.TokenManager
+import com.example.splitpay.viewmodel.UserViewModel
+import kotlin.math.abs
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [CreateGroupFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class CreateGroupFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private var _binding: FragmentCreateGroupBinding?=null
+    private val binding get() = _binding!!
+    private lateinit var tokenManager: TokenManager
+    private lateinit var  userViewModel: UserViewModel
+    private lateinit var friendAdapter: FriendAdapter
+    private lateinit var friendList:ArrayList<Int>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_group, container, false)
+        _binding= FragmentCreateGroupBinding.inflate(inflater,container,false)
+        tokenManager=TokenManager(requireContext())
+        userViewModel= ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
+        return  binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment CreateGroupFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CreateGroupFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        userViewModel.getUsers()
+        friendList= ArrayList()
+        friendAdapter= FriendAdapter(::onItemClick)
+        binding.friendrcview.layoutManager= LinearLayoutManager(requireContext())
+        binding.friendrcview.adapter=friendAdapter
+        userViewModel._getUser.observe(viewLifecycleOwner) {
+                       friendAdapter.submitList(it.data)
+        }
+
+
+
+        binding.submitBtn.setOnClickListener {
+            val groupRequest=getGroupRequest()
+            userViewModel.createGroup(groupRequest)
+            observers()
+        }
+
+
+    }
+
+    private fun onItemClick(userId:Int) {
+           if(userId>0){
+               Toast.makeText(requireContext(),"${userId} added to group", Toast.LENGTH_LONG).show()
+               friendList.add(userId)
+           }
+           else{
+               Toast.makeText(requireContext(),"${abs(userId)} remove to group", Toast.LENGTH_LONG).show()
+               friendList.remove(abs(userId))
+           }
+
+    }
+
+    private fun getGroupRequest():GroupRequest{
+          val name=binding.txtName.text
+          val users_id=friendList
+          val createdby=tokenManager.getUserId()
+        return GroupRequest(name.toString(),users_id,createdby)
+    }
+    private fun observers(){
+        userViewModel._createGroupLiveData.observe(viewLifecycleOwner, Observer {
+
+            when(it){
+                is NetworkResult.Success->{
+                     Toast.makeText(requireContext(),"group created successfully",Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_createGroupFragment_to_groupFragment)
+                }
+                is NetworkResult.Error->{
+                    Toast.makeText(requireContext(),"something went wrong",Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Loading ->{
+
                 }
             }
+        })
     }
+
 }

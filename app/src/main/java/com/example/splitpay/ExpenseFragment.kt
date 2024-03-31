@@ -59,7 +59,12 @@ class ExpenseFragment : Fragment() {
 
         binding.expenseList.layoutManager= LinearLayoutManager(requireContext())
         binding.expenseList.adapter=adapter
-
+        binding.addExpense.setOnClickListener {
+             val id=arguments?.getInt("groupID")
+             val bundle=Bundle()
+             bundle.putInt("groupID",id!!);
+             findNavController().navigate(R.id.action_expenseFragment_to_createExpenseFragment,bundle)
+        }
 
 
         userViewModel.getExpenses(groupId)

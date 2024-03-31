@@ -45,8 +45,10 @@ class GroupFragment : Fragment() {
         binding.groupList.adapter=adapter
         userViewModel.getGroups()
         userViewModel._getAllUserGroup.observe(viewLifecycleOwner) {
-             Log.i(TAG,it.data.toString())
              adapter.submitList(it.data)
+        }
+        binding.addGroup.setOnClickListener {
+            findNavController().navigate(R.id.action_groupFragment_to_createGroupFragment)
         }
     }
 

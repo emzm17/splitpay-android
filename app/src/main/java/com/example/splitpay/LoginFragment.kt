@@ -56,16 +56,12 @@ class LoginFragment : Fragment() {
     }
     private fun observers(){
        authViewModel._userSigninResponseLiveData.observe(viewLifecycleOwner) { i->
-//           Log.i("MICKY",i.data)
-//           saveCreds(i.data!!)
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
                     tokenManager.saveToken(i.data?.result.toString(),
-                        i.data!!.user?.email.toString(), i.data.user?.userId, i.data.user?.name.toString()
+                        i.data!!.email.toString(), i.data.userId, i.data.name.toString()
                     )
-//                    Log.i(TAG,tokenManager.getToken().toString())
-
                   findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
 
                 }
