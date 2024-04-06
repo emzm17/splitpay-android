@@ -1,4 +1,4 @@
-package com.example.splitpay
+package com.example.splitpay.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,10 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.splitpay.R
 import com.example.splitpay.adapter.FriendAdapter
 import com.example.splitpay.databinding.FragmentCreateGroupBinding
 import com.example.splitpay.models.GroupRequest
-import com.example.splitpay.models.User
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel

@@ -1,39 +1,23 @@
-package com.example.splitpay
+package com.example.splitpay.ui
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.splitpay.api.RetrofitHelper2
-import com.example.splitpay.api.RetrofitHelper2.api2
+import com.example.splitpay.R
 
-import com.example.splitpay.databinding.FragmentLoginBinding
 import com.example.splitpay.databinding.FragmentMainBinding
 import com.example.splitpay.models.UserResponse
-import com.example.splitpay.models.UserSigninResponse
-import com.example.splitpay.utils.Constants
-import com.example.splitpay.utils.Constants.TAG
-import com.example.splitpay.utils.Constants.USERID
-import com.example.splitpay.utils.Constants.authToken
+import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
-import com.example.splitpay.viewmodel.AuthViewModel
 import com.example.splitpay.viewmodel.UserViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding?=null
@@ -59,6 +43,7 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observers()
         val adapter=ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,listfeature)
         binding.listview.adapter=adapter
         binding.listview.onItemClickListener=object : AdapterView.OnItemClickListener{
@@ -71,30 +56,40 @@ class MainFragment : Fragment() {
                              findNavController().navigate(R.id.action_mainFragment_to_friendsFragment)
                          }
                          2->{
-
+                             findNavController().navigate(R.id.action_mainFragment_to_requestFragment)
                          }
                          3->{
-
+                           findNavController().navigate(R.id.action_mainFragment_to_usersFragment)
                          }
                          4->{
                              findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
                          }
                      }
             }
-
         }
-
         userViewModel.getparticularUser(tokenManager.getUserId())
-        userViewModel._getparticularUser.observe(viewLifecycleOwner) { it ->
-//            Log.i(TAG, it.data.toString()
-                if(it.data!=null) {
-                            binding.totalAmountTv.text = "₹ ${it.data.totalAmount}"
-                            binding.totalOweTv.text = "₹ ${it.data.totalOwe}"
-                            binding.totalOwedTv.text = "₹ ${it.data.totalOwed}"
-                            binding.usernameTv.text = "Welcome back,${it.data.name}"
-                        }
-                    }
 
+    }
+    private fun observers(){
+        userViewModel._getparticularUser.observe(viewLifecycleOwner)  { i->
+            binding.progressBar.isVisible = false
+            when (i) {
+                is NetworkResult.Success -> {
+                    binding.totalAmountTv.text = "₹ ${i.data!!.totalAmount}"
+                    binding.totalOweTv.text = "₹ ${i.data.totalOwe}"
+                    binding.totalOwedTv.text = "₹ ${i.data.totalOwed}"
+                    binding.usernameTv.text = "Welcome back,${i.data.name}"
+                }
+
+                is NetworkResult.Error -> {
+
+                }
+
+                is NetworkResult.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+            }
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

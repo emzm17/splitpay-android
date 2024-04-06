@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.splitpay.RegisterFragment"
+        android:name="com.example.splitpay.ui.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.splitpay.LoginFragment"
+        android:name="com.example.splitpay.ui.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.splitpay.MainFragment"
+        android:name="com.example.splitpay.ui.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -42,15 +42,21 @@
         <action
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_requestFragment"
+            app:destination="@id/requestFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
-        android:name="com.example.splitpay.FriendsFragment"
+        android:name="com.example.splitpay.ui.FriendsFragment"
         android:label="fragment_friends"
         tools:layout="@layout/fragment_friends" />
     <fragment
         android:id="@+id/groupFragment"
-        android:name="com.example.splitpay.GroupFragment"
+        android:name="com.example.splitpay.ui.GroupFragment"
         android:label="fragment_group"
         tools:layout="@layout/fragment_group" >
         <action
@@ -62,12 +68,16 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.splitpay.ProfileFragment"
+        android:name="com.example.splitpay.ui.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/expenseFragment"
-        android:name="com.example.splitpay.ExpenseFragment"
+        android:name="com.example.splitpay.ui.ExpenseFragment"
         android:label="fragment_expense"
         tools:layout="@layout/fragment_expense" >
         <action
@@ -79,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/createGroupFragment"
-        android:name="com.example.splitpay.CreateGroupFragment"
+        android:name="com.example.splitpay.ui.CreateGroupFragment"
         android:label="fragment_create_group"
         tools:layout="@layout/fragment_create_group" >
         <action
@@ -88,7 +98,7 @@
     </fragment>
     <fragment
         android:id="@+id/createExpenseFragment"
-        android:name="com.example.splitpay.CreateExpenseFragment"
+        android:name="com.example.splitpay.ui.CreateExpenseFragment"
         android:label="fragment_create_expense"
         tools:layout="@layout/fragment_create_expense">
         <action
@@ -97,7 +107,17 @@
     </fragment>
     <fragment
         android:id="@+id/detailExpenseFragment"
-        android:name="com.example.splitpay.DetailExpenseFragment"
+        android:name="com.example.splitpay.ui.DetailExpenseFragment"
         android:label="fragment_detail_expense"
         tools:layout="@layout/fragment_detail_expense" />
+    <fragment
+        android:id="@+id/requestFragment"
+        android:name="com.example.splitpay.ui.RequestFragment"
+        android:label="fragment_request"
+        tools:layout="@layout/fragment_request" />
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.example.splitpay.ui.UsersFragment"
+        android:label="fragment_users"
+        tools:layout="@layout/fragment_users" />
 </navigation>

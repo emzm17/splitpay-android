@@ -1,4 +1,4 @@
-package com.example.splitpay
+package com.example.splitpay.ui
 
 import android.R
 import android.annotation.SuppressLint
@@ -10,12 +10,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.example.splitpay.databinding.FragmentDetailExpenseBinding
-import com.example.splitpay.databinding.FragmentExpenseBinding
 import com.example.splitpay.models.ExpenseResponse
 import com.example.splitpay.utils.Constants
-import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
-import com.google.gson.Gson
 
 
 class DetailExpenseFragment : Fragment() {

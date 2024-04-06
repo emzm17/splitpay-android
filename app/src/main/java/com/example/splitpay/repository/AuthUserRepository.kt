@@ -1,22 +1,27 @@
 package com.example.splitpay.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.splitpay.api.RetrofitHelper
 import com.example.splitpay.api.RetrofitHelper2.api2
 import com.example.splitpay.models.ExpenseRequest
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
 import com.example.splitpay.models.User
 import com.example.splitpay.models.UserResponse
+import com.example.splitpay.models.UserSignupRequest
+import com.example.splitpay.models.UserSignupResponse
+import com.example.splitpay.utils.Constants.TAG
 import com.example.splitpay.utils.NetworkResult
 import org.json.JSONObject
 
 object AuthUserRepository {
 
-    private val _getAllUserLiveData=MutableLiveData<NetworkResult<ArrayList<UserResponse>>>()
-    val getAllUserLiveData:LiveData<NetworkResult<ArrayList<UserResponse>>>
+    private val _getAllUserLiveData=MutableLiveData<NetworkResult<ArrayList<User>>>()
+    val getAllUserLiveData:LiveData<NetworkResult<ArrayList<User>>>
         get() = _getAllUserLiveData
 
     private val _getUserLiveData=MutableLiveData<NetworkResult<ArrayList<User>>>()
@@ -50,6 +55,26 @@ object AuthUserRepository {
     private val _usercreateExpense=MutableLiveData<NetworkResult<ExpenseRequest>>()
     val usercreateExpense:LiveData<NetworkResult<ExpenseRequest>>
         get() = _usercreateExpense
+
+    private val _userupdate=MutableLiveData<NetworkResult<UserSignupResponse>>()
+    val userupdate:LiveData<NetworkResult<UserSignupResponse>>
+        get() = _userupdate
+
+
+    private val _sendFriendrequest= MutableLiveData<NetworkResult<FriendRequestResponse>>()
+    val friendrequest:LiveData<NetworkResult<FriendRequestResponse>>
+        get() = _sendFriendrequest
+
+
+    private val _acceptFriendrequest=MutableLiveData<NetworkResult<FriendRequestResponse>>()
+    val acceptfriend:LiveData<NetworkResult<FriendRequestResponse>>
+        get() = _acceptFriendrequest
+
+
+    private val _getFriendrequest= MutableLiveData<NetworkResult<ArrayList<User>>>()
+    val getfriendrequest:LiveData<NetworkResult<ArrayList<User>>>
+        get() = _getFriendrequest
+
 
     suspend fun getAllUsers(){
          _getAllUserLiveData.postValue(NetworkResult.Loading())
@@ -162,6 +187,67 @@ object AuthUserRepository {
             _usercreateExpense.postValue(NetworkResult.Error(errorObj.getString("message")))
         } else {
             _usercreateExpense.postValue(NetworkResult.Error("something went wrong"))
+        }
+    }
+
+
+    suspend fun updateInfo(userSignupRequest: UserSignupRequest){
+       _userupdate.postValue(NetworkResult.Loading())
+        val response = api2.updateUserInfo(userSignupRequest)
+
+        if (response.isSuccessful && response.body() != null) {
+            _userupdate.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _userupdate.postValue(NetworkResult.Error(errorObj.getString("message")))
+        } else {
+            _userupdate.postValue(NetworkResult.Error("something went wrong"))
+        }
+    }
+
+    suspend fun sendFriendRequest(userId:Int) {
+        _sendFriendrequest.postValue(NetworkResult.Loading())
+        val response = api2.sendFriendrequest(userId)
+        if (response.isSuccessful && response.body() != null) {
+            _sendFriendrequest.postValue(NetworkResult.Success(response.body()!!))
+
+        }
+        else if (response.errorBody() != null) {
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _sendFriendrequest.postValue(NetworkResult.Error(errorObj.getString("message")))
+        } else {
+            _sendFriendrequest.postValue(NetworkResult.Error("something went wrong"))
+        }
+
+        }
+
+
+    suspend fun getFriendRequest(){
+        _getFriendrequest.postValue(NetworkResult.Loading())
+        val response = api2.getfriendRequest()
+        if(response.isSuccessful && response.body()!=null){
+             _getFriendrequest.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if( response.isSuccessful && response.body()!=null ){
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _getFriendrequest.postValue(NetworkResult.Error(errorObj.getString("message")))
+        }
+        else{
+            _getFriendrequest.postValue(NetworkResult.Error("something went wrong"))
+        }
+    }
+    suspend fun acceptFriendRequest(userId: Int){
+        _acceptFriendrequest.postValue(NetworkResult.Loading())
+        val response = api2.acceptFriendrequest(userId)
+        if(response.isSuccessful && response.body()!=null){
+            _acceptFriendrequest.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if( response.isSuccessful && response.body()!=null ){
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _acceptFriendrequest.postValue(NetworkResult.Error(errorObj.getString("message")))
+        }
+        else{
+            _acceptFriendrequest.postValue(NetworkResult.Error("something went wrong"))
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.splitpay.api
 
 import com.example.splitpay.models.ExpenseRequest
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
 import com.example.splitpay.models.User
@@ -14,6 +15,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface UserApi {
@@ -28,7 +30,7 @@ interface UserApi {
   @GET("users/{id}")
   suspend fun getparticularUser(@Path("id")id:Int):Response<UserResponse>
   @GET("users/")
-  suspend fun getAllUser():Response<ArrayList<UserResponse>>
+  suspend fun getAllUser():Response<ArrayList<User>>
 
 
 
@@ -36,6 +38,19 @@ interface UserApi {
 
   @GET("friends/")
   suspend fun getAllFriends():Response<ArrayList<User>>
+
+
+  @POST("friends/send-friend-request/{userId}")
+  suspend fun sendFriendrequest(@Path("userId")userId:Int):Response<FriendRequestResponse>
+
+
+  @POST("friends/accept-friend-request/{userId}")
+  suspend fun acceptFriendrequest(@Path("userId")userId:Int):Response<FriendRequestResponse>
+
+
+  @GET("friends/friend-request")
+  suspend fun getfriendRequest():Response<ArrayList<User>>
+
 
 
 
@@ -64,6 +79,14 @@ interface UserApi {
 
   @POST("expenses/create")
   suspend fun createExpense(@Body expenseRequest: ExpenseRequest):Response<ExpenseRequest>
+
+
+
+ @PUT("profile/")
+ suspend fun updateUserInfo(@Body userSignupRequest: UserSignupRequest):Response<UserSignupResponse>
+
+
+
 
 
 
