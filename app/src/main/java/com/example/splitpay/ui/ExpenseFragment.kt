@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +20,22 @@ import com.example.splitpay.viewmodel.UserViewModel
 
 
 class ExpenseFragment : Fragment() {
+
+    private val bottomFabAmin:Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(),R.anim.from_bottom_fab)
+    }
+    private val tobottomFabAmin:Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(),R.anim.to_bottom_fab)
+    }
+    private val rotateclockFabAmin:Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(),R.anim.rotate_clock_wise)
+    }
+    private val rotateanticlockFabAmin:Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(),R.anim.rotate_anti_clock_wise)
+    }
     private var _binding: FragmentExpenseBinding?=null
     private lateinit var  userName:MutableMap<Int,String>
+    private var isExpanded=false
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
@@ -56,13 +72,25 @@ class ExpenseFragment : Fragment() {
 
         binding.expenseList.layoutManager= LinearLayoutManager(requireContext())
         binding.expenseList.adapter=adapter
-        binding.addExpense.setOnClickListener {
-             val id=arguments?.getInt("groupID")
-             val bundle=Bundle()
-             bundle.putInt("groupID",id!!);
-             findNavController().navigate(R.id.action_expenseFragment_to_createExpenseFragment,bundle)
-        }
+        binding.btn.setOnClickListener {
 
+                  if(isExpanded){
+                       shrinkFab()
+                  }
+                  else{
+                      expandFab()
+                  }
+
+        }
+        binding.settlementBtn.setOnClickListener {
+
+        }
+        binding.addExpense.setOnClickListener {
+               val id=arguments?.getInt("groupID")
+               val bundle=Bundle()
+               bundle.putInt("groupID",id!!);
+               findNavController().navigate(R.id.action_expenseFragment_to_createExpenseFragment,bundle)
+        }
 
         userViewModel.getExpenses(groupId)
         userViewModel._getAllExpense.observe(viewLifecycleOwner){
@@ -70,11 +98,36 @@ class ExpenseFragment : Fragment() {
 
         }
     }
+
+    private fun shrinkFab() {
+        binding.btn.startAnimation(rotateanticlockFabAmin)
+        binding.addExpense.startAnimation(tobottomFabAmin)
+        binding.settlementBtn.startAnimation(tobottomFabAmin)
+        binding.addExpenseTv.startAnimation(tobottomFabAmin)
+        binding.settlementTv.startAnimation(tobottomFabAmin)
+        isExpanded=!isExpanded
+    }
+
+    private fun expandFab() {
+        binding.btn.startAnimation(rotateclockFabAmin)
+        binding.addExpense.startAnimation(bottomFabAmin)
+        binding.settlementBtn.startAnimation(bottomFabAmin)
+        binding.addExpenseTv.startAnimation(bottomFabAmin)
+        binding.settlementTv.startAnimation(bottomFabAmin)
+        isExpanded=!isExpanded
+
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding=null
 
     }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
 
     private fun setInitialData() {
         val id=arguments?.getInt("groupID")

@@ -13,6 +13,8 @@ import com.example.splitpay.databinding.FragmentDetailExpenseBinding
 import com.example.splitpay.models.ExpenseResponse
 import com.example.splitpay.utils.Constants
 import com.example.splitpay.viewmodel.UserViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class DetailExpenseFragment : Fragment() {
@@ -58,10 +60,15 @@ class DetailExpenseFragment : Fragment() {
         val name= arguments?.getString("expenseName")
         val amount = arguments?.getString("expenseAmount")
         val createdAt=arguments?.getString("expenseCreated")
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy MMMM dd", Locale.getDefault())
+
+        // Parse the input date string into a Date object
+        val date = inputFormat.parse(createdAt)
 
         binding.nametv.text=name
         binding.amounttv.text=" ₹ ${amount}"
-        binding.createdaTtv.text=createdAt
+        binding.createdaTtv.text=outputFormat.format(date)
     }
 
     override fun onDestroyView() {

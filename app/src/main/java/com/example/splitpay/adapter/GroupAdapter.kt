@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.splitpay.databinding.GroupItemBinding
 import com.example.splitpay.models.GroupResponse
-
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class GroupAdapter(private val onItemClick: (GroupResponse) -> Unit) :ListAdapter<GroupResponse,GroupAdapter.GroupViewHolder>(ComparatorDiffUtil()){
@@ -27,8 +28,12 @@ class GroupAdapter(private val onItemClick: (GroupResponse) -> Unit) :ListAdapte
    inner class GroupViewHolder(private val binding:GroupItemBinding):RecyclerView.ViewHolder(binding.root) {
 
         fun bind(group:GroupResponse){
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yyyy MMMM dd", Locale.getDefault())
+            val date = inputFormat.parse(group.created!!)
+
              binding.title.text=group.name
-             binding.created.text=group.created
+             binding.created.text=outputFormat.format(date)
              binding.root.setOnClickListener {
                   onItemClick(group)
              }

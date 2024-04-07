@@ -35,15 +35,75 @@
         tools:listitem="@layout/expense_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
         app:backgroundTint="#8E70C5"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_add"
+        app:menu="@menu/menu"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabSize="normal"
         android:layout_margin="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:backgroundTint="#8E70C5"
+        app:fabSize="normal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add" />
+        android:src="@drawable/ic_add"
+        app:menu="@menu/menu"/>
+
+    <TextView
+        android:id="@+id/add_expenseTv"
+        android:text="Add expense"
+        android:textStyle="bold"
+        android:elevation="8dp"
+        android:background="@drawable/fab_text"
+        android:textColor="@color/black"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="8dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@id/add_expense"
+        app:layout_constraintTop_toTopOf="@id/add_expense"
+        app:layout_constraintBottom_toBottomOf="@id/add_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/settlement_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:backgroundTint="#8E70C5"
+        app:fabSize="normal"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/add_expense"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_add"
+        app:menu="@menu/menu"/>
+
+    <TextView
+        android:id="@+id/settlementTv"
+        android:text="Settlement"
+        android:textStyle="bold"
+        android:elevation="8dp"
+        android:background="@drawable/fab_text"
+        android:textColor="@color/black"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="8dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@id/settlement_btn"
+        app:layout_constraintTop_toTopOf="@id/settlement_btn"
+        app:layout_constraintBottom_toBottomOf="@id/settlement_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

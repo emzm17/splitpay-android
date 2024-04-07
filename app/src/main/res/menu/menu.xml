@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-      <item
-          android:id="@+id/navigation_dashboard"
-          android:icon="@drawable/baseline_dashboard_24"
-          android:title="Dashboard"/>
     <item
-        android:id="@+id/navigation_groups"
-        android:icon="@drawable/baseline_group_24"
-        android:title="Groups"/>
+        android:id="@+id/add_expense"
+        android:title="add expense" />
     <item
-        android:id="@+id/navigation_home"
-        android:icon="@drawable/baseline_home_24"
-        android:title="Home"/>
-
-
+        android:id="@+id/settlement_btn"
+        android:title="settlement amount" />
 
 
 
