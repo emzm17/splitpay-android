@@ -22,6 +22,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/sf_pro_display_bold"
         android:textSize="18sp"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:textColor="@color/black"
         android:layout_height="wrap_content"/>
@@ -37,6 +38,8 @@
 
 
     <LinearLayout
+        android:id="@+id/dashboard"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">

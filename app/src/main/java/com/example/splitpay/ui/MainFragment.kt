@@ -2,6 +2,7 @@ package com.example.splitpay.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.example.splitpay.R
 
 import com.example.splitpay.databinding.FragmentMainBinding
 import com.example.splitpay.models.UserResponse
+import com.example.splitpay.utils.Constants.TAG
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
@@ -43,6 +45,7 @@ class MainFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i(TAG,"back")
         observers()
         val adapter=ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1,listfeature)
         binding.listview.adapter=adapter
@@ -70,11 +73,16 @@ class MainFragment : Fragment() {
         userViewModel.getparticularUser(tokenManager.getUserId())
 
     }
+
+
+
     private fun observers(){
         userViewModel._getparticularUser.observe(viewLifecycleOwner)  { i->
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
+                    binding.dashboard.isVisible=true
+                    binding.usernameTv.isVisible=true
                     binding.totalAmountTv.text = "₹ ${i.data!!.totalAmount}"
                     binding.totalOweTv.text = "₹ ${i.data.totalOwe}"
                     binding.totalOwedTv.text = "₹ ${i.data.totalOwed}"

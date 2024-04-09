@@ -9,7 +9,7 @@ import com.example.splitpay.databinding.UserItemBinding
 import com.example.splitpay.models.User
 
 
-class UserAdapter(private val onItemclick: (User) -> Unit, private val isShow: Boolean): androidx.recyclerview.widget.ListAdapter<User, UserAdapter.UserViewHolder>(ComparatorDiffUtil()) {
+class UserAdapter(private val onItemclick: (User) -> Unit, private val isShow: Boolean, private val userId: Int): androidx.recyclerview.widget.ListAdapter<User, UserAdapter.UserViewHolder>(ComparatorDiffUtil()) {
 
 
     inner class UserViewHolder(private val binding:UserItemBinding):RecyclerView.ViewHolder(binding.root){
@@ -22,6 +22,10 @@ class UserAdapter(private val onItemclick: (User) -> Unit, private val isShow: B
                       }
                   }
                   else{
+                      binding.itemCheckbox.visibility= View.GONE
+                      binding.addBtn.visibility=View.GONE
+                  }
+                  if(userId==item.userId){
                       binding.itemCheckbox.visibility= View.GONE
                       binding.addBtn.visibility=View.GONE
                   }

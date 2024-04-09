@@ -5,19 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.splitpay.R
 import com.example.splitpay.adapter.GroupAdapter
-import com.example.splitpay.databinding.FragmentGroupBinding
 import com.example.splitpay.models.GroupResponse
 import com.example.splitpay.utils.TokenManager
+import com.example.splitpay.databinding.FragmentGroupBinding
+import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.viewmodel.UserViewModel
 
 
 class GroupFragment : Fragment() {
-    private var _binding: FragmentGroupBinding?=null
+    private var _binding: com.example.splitpay.databinding.FragmentGroupBinding?=null
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
@@ -41,9 +43,7 @@ class GroupFragment : Fragment() {
         binding.groupList.layoutManager=LinearLayoutManager(requireContext())
         binding.groupList.adapter=adapter
         userViewModel.getGroups()
-        userViewModel._getAllUserGroup.observe(viewLifecycleOwner) {
-             adapter.submitList(it.data)
-        }
+        observe()
         binding.addGroup.setOnClickListener {
             findNavController().navigate(R.id.action_groupFragment_to_createGroupFragment)
         }
@@ -56,7 +56,24 @@ class GroupFragment : Fragment() {
           bundle.putInt("groupID",groupResponse.id!!.toInt())
           findNavController().navigate(R.id.action_groupFragment_to_expenseFragment,bundle)
     }
+    private fun observe(){
 
+        userViewModel._getAllUserGroup.observe(viewLifecycleOwner) { i->
+
+            binding.progressBar.isVisible = false
+            when (i) {
+                is NetworkResult.Success -> {
+                    adapter.submitList(i.data)
+                }
+                is NetworkResult.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+
+                is NetworkResult.Error -> TODO()
+
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding=null

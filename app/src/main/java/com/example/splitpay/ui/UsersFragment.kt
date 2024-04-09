@@ -1,7 +1,6 @@
 package com.example.splitpay.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.splitpay.adapter.UserAdapter
 import com.example.splitpay.databinding.FragmentUsersBinding
 import com.example.splitpay.models.User
-import com.example.splitpay.utils.Constants.TAG
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
@@ -26,6 +24,7 @@ class UsersFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
+    private lateinit var allUser:ArrayList<User>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,14 +38,17 @@ class UsersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userAdapter = UserAdapter(::onItemClicked,true)
+        userAdapter = UserAdapter(::onItemClicked,true,tokenManager.getUserId())
         binding.friendrcview.layoutManager = LinearLayoutManager(requireContext())
         binding.friendrcview.adapter = userAdapter
+        allUser= ArrayList()
         userViewModel.getAllUsers()
         observers()
     }
     private fun observers(){
         userViewModel._getAllUser.observe(viewLifecycleOwner)  { i->
+
+
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {

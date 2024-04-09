@@ -36,7 +36,7 @@ class FriendsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userAdapter = UserAdapter(::onItemClicked, false)
+        userAdapter = UserAdapter(::onItemClicked, false, tokenManager.getUserId())
         binding.friendrcview.layoutManager = LinearLayoutManager(requireContext())
         binding.friendrcview.adapter = userAdapter
         userViewModel.getUsers()

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.example.splitpay.R
 import com.example.splitpay.databinding.FragmentExpenseBinding
 import com.example.splitpay.models.ExpenseResponse
 import com.example.splitpay.utils.Constants.userNamemap
+import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
 
@@ -93,11 +95,25 @@ class ExpenseFragment : Fragment() {
         }
 
         userViewModel.getExpenses(groupId)
-        userViewModel._getAllExpense.observe(viewLifecycleOwner){
-              adapter.submitList(it.data)
-
-        }
+        observe()
     }
+   private fun observe(){
+
+       userViewModel._getAllExpense.observe(viewLifecycleOwner) { i->
+
+           binding.progressBar.isVisible = false
+           when (i) {
+               is NetworkResult.Success -> {
+                   adapter.submitList(i.data)
+               }
+               is NetworkResult.Loading -> {
+                   binding.progressBar.isVisible = true
+               }
+
+               is NetworkResult.Error -> TODO()
+           }
+       }
+   }
 
     private fun shrinkFab() {
         binding.btn.startAnimation(rotateanticlockFabAmin)

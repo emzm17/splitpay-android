@@ -36,16 +36,15 @@ class RegisterFragment : Fragment() {
         _binding= FragmentRegisterBinding.inflate(inflater,container,false)
         tokenManager=TokenManager(requireContext())
         authToken=tokenManager.getToken().toString()
-//        Log.i("SPLIT",tokenManager.getToken().toString())
-//        Log.i("SPLIT1",authToken)
-        if(tokenManager.getToken()!=null){
-            findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
-        }
       return  binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(tokenManager.getToken()!=null){
+            findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
+
+        }
         authViewModel=ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
         binding.btnLogin.setOnClickListener {
              findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
