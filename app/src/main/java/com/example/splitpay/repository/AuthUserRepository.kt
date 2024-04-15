@@ -10,6 +10,7 @@ import com.example.splitpay.models.ExpenseResponse
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
+import com.example.splitpay.models.SettlementResponse
 import com.example.splitpay.models.User
 import com.example.splitpay.models.UserResponse
 import com.example.splitpay.models.UserSignupRequest
@@ -38,7 +39,7 @@ object AuthUserRepository {
 
     private val _getAllGroupsLiveData= MutableLiveData<NetworkResult<ArrayList<GroupResponse>>>()
     val getAllGroupsLiveData:LiveData<NetworkResult<ArrayList<GroupResponse>>>
-        get() = _getAllUserGroupsLiveData
+        get() = _getAllGroupsLiveData
 
     private val _getparticularGroup=MutableLiveData<NetworkResult<GroupResponse>>()
     val getparticularGroup:LiveData<NetworkResult<GroupResponse>>
@@ -76,6 +77,10 @@ object AuthUserRepository {
         get() = _getFriendrequest
 
 
+    private val _getSettlement=MutableLiveData<NetworkResult<SettlementResponse>>()
+    val settlement:LiveData<NetworkResult<SettlementResponse>>
+        get() = _getSettlement
+
     suspend fun getAllUsers(){
          _getAllUserLiveData.postValue(NetworkResult.Loading())
          val response=api2.getAllUser()
@@ -103,8 +108,9 @@ object AuthUserRepository {
     }
 
     suspend fun getGroups(){
-        _getAllGroupsLiveData.postValue(NetworkResult.Loading())
+        _getAllUserGroupsLiveData.postValue(NetworkResult.Loading())
         val response=api2.getAllUserGroups()
+        Log.i("XYZ",response.body().toString())
         if (response.isSuccessful && response.body() != null) {
             _getAllUserGroupsLiveData.postValue(NetworkResult.Success(response.body()!!))
         } else if (response.errorBody() != null) {
@@ -115,18 +121,7 @@ object AuthUserRepository {
         }
     }
 
-    suspend fun getExpense(id:Int){
-         _getAllExpenseLiveData.postValue(NetworkResult.Loading())
-         val response=api2.getAllExpenseGroup(id)
-        if (response.isSuccessful && response.body() != null) {
-            _getAllExpenseLiveData.postValue(NetworkResult.Success(response.body()!!))
-        } else if (response.errorBody() != null) {
-            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
-            _getAllExpenseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
-        } else {
-            _getAllExpenseLiveData.postValue(NetworkResult.Error("something went wrong"))
-        }
-    }
+
 
     suspend fun getallGroups(){
         _getAllGroupsLiveData.postValue(NetworkResult.Loading())
@@ -138,6 +133,18 @@ object AuthUserRepository {
             _getAllGroupsLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
         } else {
             _getAllGroupsLiveData.postValue(NetworkResult.Error("something went wrong"))
+        }
+    }
+    suspend fun getExpense(id:Int){
+        _getAllExpenseLiveData.postValue(NetworkResult.Loading())
+        val response=api2.getAllExpenseGroup(id)
+        if (response.isSuccessful && response.body() != null) {
+            _getAllExpenseLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _getAllExpenseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+        } else {
+            _getAllExpenseLiveData.postValue(NetworkResult.Error("something went wrong"))
         }
     }
     suspend fun getparticularGroups(id: Int){
@@ -248,6 +255,21 @@ object AuthUserRepository {
         }
         else{
             _acceptFriendrequest.postValue(NetworkResult.Error("something went wrong"))
+        }
+    }
+
+    suspend fun  settlement(groupId:Int){
+        _getSettlement.postValue(NetworkResult.Loading())
+        val response= api2.getsettlement(groupId)
+        if(response.isSuccessful && response.body()!=null){
+             _getSettlement.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.isSuccessful && response.body()!=null){
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _getSettlement.postValue(NetworkResult.Error(errorObj.getString("message")))
+        }
+        else{
+             _getSettlement.postValue(NetworkResult.Error("something went wrong"))
         }
     }
 

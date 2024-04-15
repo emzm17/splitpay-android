@@ -1,10 +1,12 @@
 package com.example.splitpay.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +16,7 @@ import com.example.splitpay.adapter.GroupAdapter
 import com.example.splitpay.models.GroupResponse
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.databinding.FragmentGroupBinding
+import com.example.splitpay.utils.Constants.TAG
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.viewmodel.UserViewModel
 
@@ -59,7 +62,6 @@ class GroupFragment : Fragment() {
     private fun observe(){
 
         userViewModel._getAllUserGroup.observe(viewLifecycleOwner) { i->
-
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
@@ -69,7 +71,9 @@ class GroupFragment : Fragment() {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+                     Toast.makeText(requireContext(), i.message.toString(),Toast.LENGTH_SHORT).show()
+                }
 
             }
         }

@@ -1,6 +1,8 @@
 package com.example.splitpay.ui
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -27,7 +29,7 @@ class MainFragment : Fragment() {
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
     private lateinit var users:ArrayList<UserResponse>
-    private var listfeature=arrayOf("Groups","Friends","Accept-request","Users","Profile")
+    private var listfeature=arrayOf("Groups","Friends","Accept-request","Users","Profile","Logout")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,6 +69,23 @@ class MainFragment : Fragment() {
                          4->{
                              findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
                          }
+                         5->{
+                             val builder= AlertDialog.Builder(requireContext())
+                             builder.setTitle("Logout")
+                             builder.setMessage("Are are sure you want to logout?")
+                             builder.setIcon(R.drawable.ic_warning)
+                             builder.setPositiveButton("Yes" ){ dialog: DialogInterface, i: Int ->
+                                 clearSession()
+                                 findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+                                 dialog.dismiss()
+                             }
+                             builder.setNegativeButton("No"){ dialog:DialogInterface,i:Int->
+                                 dialog.dismiss()
+                             }
+                             val alertDialog=builder.create()
+                             alertDialog.setCancelable(false)
+                             alertDialog.show()
+                         }
                      }
             }
         }
@@ -74,7 +93,9 @@ class MainFragment : Fragment() {
 
     }
 
-
+    private fun clearSession() {
+              tokenManager.saveToken("","",-1,"")
+    }
 
     private fun observers(){
         userViewModel._getparticularUser.observe(viewLifecycleOwner)  { i->

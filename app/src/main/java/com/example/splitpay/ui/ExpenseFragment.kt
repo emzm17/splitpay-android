@@ -64,6 +64,9 @@ class ExpenseFragment : Fragment() {
         setInitialData()
         adapter=ExpenseAdapter(::onItemClicked)
         userViewModel.getAllUsers()
+        val id=arguments?.getInt("groupID")
+        val bundle=Bundle()
+        bundle.putInt("groupID",id!!);
         userViewModel._getAllUser.observe(viewLifecycleOwner){
             it.data?.forEach {
                 userName.put(it.userId!!,it.name!!)
@@ -85,12 +88,10 @@ class ExpenseFragment : Fragment() {
 
         }
         binding.settlementBtn.setOnClickListener {
-
+                     findNavController().navigate(R.id.action_expenseFragment_to_settlementFragment,bundle)
         }
         binding.addExpense.setOnClickListener {
-               val id=arguments?.getInt("groupID")
-               val bundle=Bundle()
-               bundle.putInt("groupID",id!!);
+
                findNavController().navigate(R.id.action_expenseFragment_to_createExpenseFragment,bundle)
         }
 
