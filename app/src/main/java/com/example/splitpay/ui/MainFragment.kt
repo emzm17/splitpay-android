@@ -76,6 +76,7 @@ class MainFragment : Fragment() {
 
 
 
+    @SuppressLint("SetTextI18n")
     private fun observers(){
         userViewModel._getparticularUser.observe(viewLifecycleOwner)  { i->
             binding.progressBar.isVisible = false
@@ -83,10 +84,10 @@ class MainFragment : Fragment() {
                 is NetworkResult.Success -> {
                     binding.dashboard.isVisible=true
                     binding.usernameTv.isVisible=true
-                    binding.totalAmountTv.text = "₹ ${i.data!!.totalAmount}"
-                    binding.totalOweTv.text = "₹ ${i.data.totalOwe}"
-                    binding.totalOwedTv.text = "₹ ${i.data.totalOwed}"
-                    binding.usernameTv.text = "Welcome back,${i.data.name}"
+                    binding.totalAmountTv.text = "₹ ${i.data?.data?.totalAmount ?: "0.00"}"
+                    binding.totalOweTv.text = "₹ ${i.data?.data?.totalOwe ?: "0.00"}"
+                    binding.totalOwedTv.text = "₹ ${i.data?.data?.totalOwed ?: "0.00"}"
+                    binding.usernameTv.text = "Welcome back,${i.data?.data?.name}"
                 }
 
                 is NetworkResult.Error -> {

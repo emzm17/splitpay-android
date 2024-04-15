@@ -155,6 +155,7 @@ object AuthUserRepository {
     suspend fun getparticularUser(id: Int){
         _getparticularUser.postValue(NetworkResult.Loading())
         val response=api2.getparticularUser(id)
+        Log.i(TAG,response.body().toString())
         if (response.isSuccessful && response.body() != null) {
             _getparticularUser.postValue(NetworkResult.Success(response.body()!!))
         } else if (response.errorBody() != null) {
