@@ -30,14 +30,14 @@ interface UserApi {
   @GET("users/{id}")
   suspend fun getparticularUser(@Path("id")id:Int):Response<UserResponse>
   @GET("users/")
-  suspend fun getAllUser():Response<ArrayList<User>>
+  suspend fun getAllUser():Response<User>
 
 
 
 
 
   @GET("friends/")
-  suspend fun getAllFriends():Response<ArrayList<User>>
+  suspend fun getAllFriends():Response<User>?=null
 
 
   @POST("friends/send-friend-request/{userId}")
@@ -56,7 +56,7 @@ interface UserApi {
 
 
   @GET("groups/")
-  suspend fun getAllUserGroups():Response<ArrayList<GroupResponse>>
+  suspend fun getAllUserGroups():Response<GroupResponse>
 
   @GET("groups/all")
   suspend fun getAllGroups():Response<ArrayList<GroupResponse>>
@@ -71,10 +71,10 @@ interface UserApi {
 
 
   @GET("expenses/{id}")
-  suspend fun getAllExpenseGroup(@Path("id")id:Int):Response<ArrayList<ExpenseResponse>>
+  suspend fun getAllExpenseGroup(@Path("id")id:Int):Response<ExpenseResponse>
 
   @GET("expenses/particular/{id}")
-  suspend fun getparticularExpense(@Path("id")id:Int):Response<ArrayList<ExpenseResponse>>
+  suspend fun getparticularExpense(@Path("id")id:Int):Response<ExpenseResponse>
 
 
   @POST("expenses/create")

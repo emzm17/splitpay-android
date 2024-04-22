@@ -5,13 +5,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.splitpay.databinding.ExpenseItemBinding
-import com.example.splitpay.models.ExpenseResponse
-import com.example.splitpay.models.GroupResponse
-import com.example.splitpay.utils.Constants.userNamemap
+import com.example.splitpay.models._DataItem
 
 
-class ExpenseAdapter(private val onItemClick: (ExpenseResponse) -> Unit) :
-    ListAdapter<ExpenseResponse,ExpenseAdapter.ExpenseViewHolder>(ComparatorDiffUtil()){
+class ExpenseAdapter(
+    private val onItemClick: (_DataItem) -> Unit
+) :
+    ListAdapter<_DataItem,ExpenseAdapter.ExpenseViewHolder>(ComparatorDiffUtil()){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -31,10 +31,10 @@ class ExpenseAdapter(private val onItemClick: (ExpenseResponse) -> Unit) :
     inner class ExpenseViewHolder(private val binding: ExpenseItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(expense:ExpenseResponse){
+        fun bind(expense:_DataItem){
               binding.descriptionTv.text=expense.description
               binding.amountTv.text="₹ ${expense.amount}"
-              binding.createdTv.text="Paid by:-${userNamemap[expense.payerId]}"
+              binding.createdTv.text="Paid by:-${expense.payer?.get(0)!!.name}"
               binding.root.setOnClickListener {
                 onItemClick(expense)
             }
@@ -46,12 +46,13 @@ class ExpenseAdapter(private val onItemClick: (ExpenseResponse) -> Unit) :
 
 }
 
-class ComparatorDiffUtil: DiffUtil.ItemCallback<ExpenseResponse>() {
-    override fun areItemsTheSame(oldItem: ExpenseResponse, newItem: ExpenseResponse): Boolean {
+class ComparatorDiffUtil: DiffUtil.ItemCallback<_DataItem>() {
+
+    override fun areItemsTheSame(oldItem: _DataItem, newItem: _DataItem): Boolean {
         return oldItem.expenseId == newItem.expenseId
     }
 
-    override fun areContentsTheSame(oldItem: ExpenseResponse, newItem: ExpenseResponse): Boolean {
+    override fun areContentsTheSame(oldItem: _DataItem, newItem: _DataItem): Boolean {
         return oldItem == newItem
     }
 }

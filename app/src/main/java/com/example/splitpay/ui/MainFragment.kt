@@ -1,6 +1,8 @@
 package com.example.splitpay.ui
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,10 +19,12 @@ import com.example.splitpay.R
 
 import com.example.splitpay.databinding.FragmentMainBinding
 import com.example.splitpay.models.UserResponse
+import com.example.splitpay.utils.Constants
 import com.example.splitpay.utils.Constants.TAG
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
+import java.text.DecimalFormat
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding?=null
@@ -27,7 +32,7 @@ class MainFragment : Fragment() {
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
     private lateinit var users:ArrayList<UserResponse>
-    private var listfeature=arrayOf("Groups","Friends","Accept-request","Users","Profile")
+    private var listfeature=arrayOf("Groups","Friends","Accept-request","Users","Profile","Logout")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -67,31 +72,54 @@ class MainFragment : Fragment() {
                          4->{
                              findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
                          }
+                         5->{
+                             val builder= AlertDialog.Builder(requireContext())
+                             builder.setTitle("Logout")
+                             builder.setMessage("Are are sure you want to logout?")
+                             builder.setIcon(R.drawable.ic_warning)
+                             builder.setPositiveButton("Yes" ){ dialog: DialogInterface, i: Int ->
+                                 clearSession()
+                                 findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
+                                 dialog.dismiss()
+                             }
+                             builder.setNegativeButton("No"){ dialog: DialogInterface, i:Int->
+                                 dialog.dismiss()
+                             }
+                             val alertDialog=builder.create()
+                             alertDialog.setCancelable(false)
+                             alertDialog.show()
+                         }
                      }
             }
         }
         userViewModel.getparticularUser(tokenManager.getUserId())
 
+
     }
+    private fun clearSession() {
+        tokenManager.saveToken("","",-1,"")
+    }
+
 
 
 
     @SuppressLint("SetTextI18n")
     private fun observers(){
+        val decimalFormat = DecimalFormat("#.00")
         userViewModel._getparticularUser.observe(viewLifecycleOwner)  { i->
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
                     binding.dashboard.isVisible=true
                     binding.usernameTv.isVisible=true
-                    binding.totalAmountTv.text = "₹ ${i.data?.data?.totalAmount ?: "0.00"}"
-                    binding.totalOweTv.text = "₹ ${i.data?.data?.totalOwe ?: "0.00"}"
-                    binding.totalOwedTv.text = "₹ ${i.data?.data?.totalOwed ?: "0.00"}"
+                    binding.totalAmountTv.text = "₹ ${decimalFormat.format(i.data?.data?.total_amount)}"
+                    binding.totalOweTv.text = "₹ ${decimalFormat.format(i.data?.data?.total_owe)}"
+                    binding.totalOwedTv.text = "₹ ${decimalFormat.format(i.data?.data?.total_owed)}"
                     binding.usernameTv.text = "Welcome back,${i.data?.data?.name}"
                 }
 
                 is NetworkResult.Error -> {
-
+                    Toast.makeText(context, "Error: ${i.message.toString()}", Toast.LENGTH_SHORT).show()
                 }
 
                 is NetworkResult.Loading -> {

@@ -50,6 +50,11 @@
         <action
             android:id="@+id/action_mainFragment_to_requestFragment"
             app:destination="@id/requestFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendsFragment"
@@ -96,6 +101,8 @@
         tools:layout="@layout/fragment_create_group" >
         <action
             android:id="@+id/action_createGroupFragment_to_groupFragment"
+            app:popUpTo="@id/createGroupFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/groupFragment" />
     </fragment>
     <fragment

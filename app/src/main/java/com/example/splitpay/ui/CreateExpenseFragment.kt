@@ -13,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.splitpay.R
 import com.example.splitpay.databinding.FragmentCreateExpenseBinding
 import com.example.splitpay.models.ExpenseRequest
+import com.example.splitpay.models.PayerItem
+import com.example.splitpay.models._PayerItem
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
@@ -23,6 +25,7 @@ class CreateExpenseFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
+    private lateinit var list:List<_PayerItem>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +39,7 @@ class CreateExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        list= mutableListOf()
         binding.submitBtn.setOnClickListener {
              setData()
              observers()
@@ -46,10 +50,11 @@ class CreateExpenseFragment : Fragment() {
 
     private fun setData() {
         val id=arguments?.getInt("groupID")
-        Log.i("groupID", id.toString())
         val amount=binding.txtAmount.text
         val desc=binding.txtDescr.text
-        val expense=ExpenseRequest(amount.toString().toInt(),id,desc.toString(),tokenManager.getUserId())
+        val payeritem= _PayerItem(tokenManager.getUserId(),tokenManager.getUsername(),tokenManager.getEmail())
+        val list= listOf(payeritem)
+        val expense=ExpenseRequest(amount.toString(),id,desc.toString(),list)
         userViewModel.createExpense(expense)
     }
 

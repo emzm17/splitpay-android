@@ -2,20 +2,22 @@ package com.example.splitpay.ui
 
 import ExpenseAdapter
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.splitpay.R
 import com.example.splitpay.databinding.FragmentExpenseBinding
-import com.example.splitpay.models.ExpenseResponse
-import com.example.splitpay.utils.Constants.userNamemap
+import com.example.splitpay.models._DataItem
+import com.example.splitpay.utils.Constants.userMap
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
@@ -41,7 +43,6 @@ class ExpenseFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
-    private var expense:ExpenseResponse?=null
     private var groupId:Int = 0
     private lateinit var adapter: ExpenseAdapter
 
@@ -54,60 +55,55 @@ class ExpenseFragment : Fragment() {
         _binding= FragmentExpenseBinding.inflate(inflater,container,false)
         tokenManager=TokenManager(requireContext())
         userViewModel= ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
-
-        userName=mutableMapOf()
         return  binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setInitialData()
-        adapter=ExpenseAdapter(::onItemClicked)
-        userViewModel.getAllUsers()
-        userViewModel._getAllUser.observe(viewLifecycleOwner){
-            it.data?.forEach {
-                userName.put(it.userId!!,it.name!!)
-            }
-            userNamemap=userName
-
-        }
-
-        binding.expenseList.layoutManager= LinearLayoutManager(requireContext())
-        binding.expenseList.adapter=adapter
         binding.btn.setOnClickListener {
 
-                  if(isExpanded){
-                       shrinkFab()
-                  }
-                  else{
-                      expandFab()
-                  }
+            if (isExpanded) {
+                shrinkFab()
+            } else {
+                expandFab()
+            }
 
         }
         binding.settlementBtn.setOnClickListener {
 
         }
         binding.addExpense.setOnClickListener {
-               val id=arguments?.getInt("groupID")
-               val bundle=Bundle()
-               bundle.putInt("groupID",id!!);
-               findNavController().navigate(R.id.action_expenseFragment_to_createExpenseFragment,bundle)
+            val id = arguments?.getInt("groupID")
+            val bundle = Bundle()
+            bundle.putInt("groupID", id!!);
+            findNavController().navigate(
+                R.id.action_expenseFragment_to_createExpenseFragment,
+                bundle
+            )
         }
+        userViewModel.getExpenses(setInitialData())
+        expenseobserve()
+        adapter = ExpenseAdapter(::onItemClicked)
+        binding.expenseList.layoutManager = LinearLayoutManager(requireContext())
+        binding.expenseList.adapter = adapter
 
-        userViewModel.getExpenses(groupId)
-        observe()
+
     }
-   private fun observe(){
+
+    private fun expenseobserve(){
 
        userViewModel._getAllExpense.observe(viewLifecycleOwner) { i->
 
            binding.progressBar.isVisible = false
            when (i) {
                is NetworkResult.Success -> {
-                   adapter.submitList(i.data)
+                   adapter.submitList(i.data!!.data)
+
+
                }
                is NetworkResult.Loading -> {
                    binding.progressBar.isVisible = true
+
                }
 
                is NetworkResult.Error -> TODO()
@@ -139,21 +135,16 @@ class ExpenseFragment : Fragment() {
         _binding=null
 
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-
-    private fun setInitialData() {
+    private fun setInitialData():Int {
         val id=arguments?.getInt("groupID")
-        groupId=id!!
+        return id!!
     }
-    private fun onItemClicked(expense:ExpenseResponse){
+    private fun onItemClicked(expense:_DataItem){
         val bundle=Bundle()
         bundle.putString("expenseName",expense.description)
         bundle.putString("expenseAmount",expense.amount)
         bundle.putString("expenseCreated",expense.created)
+        bundle.putString("expensePayer",expense.payer?.get(0)!!.name)
         bundle.putString("expenseGroup", expense.groupId.toString())
         findNavController().navigate(R.id.action_expenseFragment_to_detailExpenseFragment,bundle)
     }

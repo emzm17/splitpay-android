@@ -41,7 +41,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(tokenManager.getToken()!=null){
+        if(tokenManager.getToken()!=null && tokenManager.getToken()!="") {
             findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
 
         }

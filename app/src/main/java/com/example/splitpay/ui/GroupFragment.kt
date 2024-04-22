@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,7 +20,7 @@ import com.example.splitpay.viewmodel.UserViewModel
 
 
 class GroupFragment : Fragment() {
-    private var _binding: com.example.splitpay.databinding.FragmentGroupBinding?=null
+    private var _binding: FragmentGroupBinding?=null
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
@@ -50,10 +51,10 @@ class GroupFragment : Fragment() {
     }
 
 
-    private fun onItemClicked(groupResponse: GroupResponse){
+    private fun onItemClicked(ID:Int){
 //        Toast.makeText(requireContext(),"hello world",Toast.LENGTH_SHORT).show()
           val bundle=Bundle()
-          bundle.putInt("groupID",groupResponse.id!!.toInt())
+          bundle.putInt("groupID",ID)
           findNavController().navigate(R.id.action_groupFragment_to_expenseFragment,bundle)
     }
     private fun observe(){
@@ -63,13 +64,15 @@ class GroupFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
-                    adapter.submitList(i.data)
+                    adapter.submitList(i.data!!.data)
                 }
                 is NetworkResult.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+                    Toast.makeText(requireContext(), i.message.toString(),Toast.LENGTH_SHORT).show()
+                }
 
             }
         }
