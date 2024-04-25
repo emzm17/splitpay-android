@@ -76,13 +76,18 @@ class UsersFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
+                    Log.i("x1",i.data!!.message.toString())
                      Toast.makeText(requireContext(), i.data?.message,Toast.LENGTH_SHORT).show()
                 }
                 is NetworkResult.Loading -> {
+                    Log.i("x2",i.data?.message.toString())
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+                    Log.i("x3",i.message.toString())
+                    Toast.makeText(requireContext(), i.message,Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.splitpay.models.DataItem
 import com.example.splitpay.models.ExpenseRequest
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.FriendRequest
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
@@ -57,8 +58,8 @@ class UserViewModel:ViewModel() {
     val _sendfriendRequest:LiveData<NetworkResult<FriendRequestResponse>>
         get() = AuthUserRepository.friendrequest
 
-//    val _getfriendRequest:LiveData<NetworkResult<ArrayList<User>>>
-//        get() = AuthUserRepository.getfriendrequest
+    val _getfriendRequest:LiveData<NetworkResult<FriendRequest>>
+        get() = AuthUserRepository.getfriendrequest
 
     val _acceptfriendRequest:LiveData<NetworkResult<FriendRequestResponse>>
         get() = AuthUserRepository.acceptfriend
@@ -141,11 +142,11 @@ class UserViewModel:ViewModel() {
         }
     }
 
-//    fun getFriendRequest(){
-//        viewModelScope.launch {
-//             AuthUserRepository.getFriendRequest()
-//        }
-//    }
+    fun getFriendRequest(){
+        viewModelScope.launch {
+             AuthUserRepository.getFriendRequest()
+        }
+    }
     fun validateInput(name:String,email:String,password:String):Pair<Boolean,String>{
         var result=Pair(true,"")
         if(   TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){

@@ -2,6 +2,7 @@ package com.example.splitpay.api
 
 import com.example.splitpay.models.ExpenseRequest
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.FriendRequest
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
@@ -49,7 +50,7 @@ interface UserApi {
 
 
   @GET("friends/friend-request")
-  suspend fun getfriendRequest():Response<ArrayList<User>>
+  suspend fun getfriendRequest():Response<FriendRequest>
 
 
 

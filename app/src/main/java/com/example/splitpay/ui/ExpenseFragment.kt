@@ -106,7 +106,9 @@ class ExpenseFragment : Fragment() {
 
                }
 
-               is NetworkResult.Error -> TODO()
+               is NetworkResult.Error -> {
+
+               }
            }
        }
    }

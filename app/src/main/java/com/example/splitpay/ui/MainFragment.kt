@@ -112,9 +112,9 @@ class MainFragment : Fragment() {
                 is NetworkResult.Success -> {
                     binding.dashboard.isVisible=true
                     binding.usernameTv.isVisible=true
-                    binding.totalAmountTv.text = "₹ ${decimalFormat.format(i.data?.data?.total_amount)}"
-                    binding.totalOweTv.text = "₹ ${decimalFormat.format(i.data?.data?.total_owe)}"
-                    binding.totalOwedTv.text = "₹ ${decimalFormat.format(i.data?.data?.total_owed)}"
+                    binding.totalAmountTv.text = "₹ ${i.data?.data?.totalAmount}"
+                    binding.totalOweTv.text = "₹ ${i.data?.data?.totalOwe}"
+                    binding.totalOwedTv.text = "₹ ${i.data?.data?.totalOwed}"
                     binding.usernameTv.text = "Welcome back,${i.data?.data?.name}"
                 }
 

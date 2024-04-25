@@ -52,7 +52,6 @@ class GroupFragment : Fragment() {
 
 
     private fun onItemClicked(ID:Int){
-//        Toast.makeText(requireContext(),"hello world",Toast.LENGTH_SHORT).show()
           val bundle=Bundle()
           bundle.putInt("groupID",ID)
           findNavController().navigate(R.id.action_groupFragment_to_expenseFragment,bundle)
