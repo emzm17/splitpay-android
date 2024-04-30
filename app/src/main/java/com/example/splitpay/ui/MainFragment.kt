@@ -102,10 +102,6 @@ class MainFragment : Fragment() {
         tokenManager.saveToken("","",-1,"")
     }
 
-    private fun clearSession() {
-              tokenManager.saveToken("","",-1,"")
-    }
-
 
     @SuppressLint("SetTextI18n")
     private fun observers(){

@@ -36,7 +36,6 @@ class SettlementFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter= SettlementAdapter()
         val id=arguments?.getInt("groupID")
-        Log.i("settlement",id.toString())
         userViewModel.getsettlement(id!!.toInt())
         binding.settlementList.layoutManager= LinearLayoutManager(requireContext())
         binding.settlementList.adapter=adapter

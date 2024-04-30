@@ -15,7 +15,7 @@ data class SettlementResponse(
 	val status: String? = null
 )
 
-data class ResItem(
+data class _ResItem(
 
 	@field:SerializedName("payee")
 	val payee: Payee? = null,
@@ -41,7 +41,7 @@ data class Payee(
 
 data class Res(
 	@field:SerializedName("res")
-	val res: List<ResItem?>? = null
+	val res: List<_ResItem?>? = null
 )
 
 
