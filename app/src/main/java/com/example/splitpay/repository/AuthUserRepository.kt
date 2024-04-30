@@ -125,9 +125,11 @@ object AuthUserRepository {
         }
     }
 
+
     suspend fun getuserGroups(){
         _getAllUserGroupsLiveData.postValue(NetworkResult.Loading())
         val response=api2.getAllUserGroups()
+        Log.i("XYZ",response.body().toString())
         if (response.isSuccessful && response.body() != null) {
             _getAllUserGroupsLiveData.postValue(NetworkResult.Success(response.body()!!))
         } else if (response.errorBody() != null) {
@@ -138,18 +140,7 @@ object AuthUserRepository {
         }
     }
 
-    suspend fun getExpense(id:Int){
-         _getAllExpenseLiveData.postValue(NetworkResult.Loading())
-         val response=api2.getAllExpenseGroup(id)
-        if (response.isSuccessful && response.body() != null) {
-            _getAllExpenseLiveData.postValue(NetworkResult.Success(response.body()!!))
-        } else if (response.errorBody() != null) {
-            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
-            _getAllExpenseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
-        } else {
-            _getAllExpenseLiveData.postValue(NetworkResult.Error("something went wrong"))
-        }
-    }
+
 
     suspend fun getallGroups(){
         _getAllGroupsLiveData.postValue(NetworkResult.Loading())
@@ -162,6 +153,18 @@ object AuthUserRepository {
             _getAllGroupsLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
         } else {
             _getAllGroupsLiveData.postValue(NetworkResult.Error("something went wrong"))
+        }
+    }
+    suspend fun getExpense(id:Int){
+        _getAllExpenseLiveData.postValue(NetworkResult.Loading())
+        val response=api2.getAllExpenseGroup(id)
+        if (response.isSuccessful && response.body() != null) {
+            _getAllExpenseLiveData.postValue(NetworkResult.Success(response.body()!!))
+        } else if (response.errorBody() != null) {
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _getAllExpenseLiveData.postValue(NetworkResult.Error(errorObj.getString("message")))
+        } else {
+            _getAllExpenseLiveData.postValue(NetworkResult.Error("something went wrong"))
         }
     }
     suspend fun getparticularGroups(id: Int){
@@ -280,6 +283,7 @@ object AuthUserRepository {
         }
     }
 
+
     suspend fun getParticularExpense(expenseId:Int){
          _getparticularExpenseLiveData.postValue(NetworkResult.Loading())
          val response=api2.getparticularExpense(expenseId)
@@ -309,4 +313,5 @@ object AuthUserRepository {
             _getSettlement.postValue(NetworkResult.Error("something went wrong"))
         }
     }
+
 }

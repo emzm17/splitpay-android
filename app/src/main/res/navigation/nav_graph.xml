@@ -52,8 +52,10 @@
             app:destination="@id/requestFragment" />
         <action
             android:id="@+id/action_mainFragment_to_loginFragment"
+
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true"
+
             app:destination="@id/loginFragment" />
     </fragment>
     <fragment
@@ -71,6 +73,8 @@
             app:destination="@id/expenseFragment" />
         <action
             android:id="@+id/action_groupFragment_to_createGroupFragment"
+            app:popUpTo="@id/groupFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/createGroupFragment" />
     </fragment>
     <fragment
@@ -140,4 +144,5 @@
         android:label="fragment_settlement"
         tools:layout="@layout/fragment_settlement">
     </fragment>
+
 </navigation>

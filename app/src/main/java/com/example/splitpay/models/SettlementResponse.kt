@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class SettlementResponse(
 
+
 	@field:SerializedName("data")
 	val data: Res? = null,
 
@@ -39,10 +40,10 @@ data class Payee(
 )
 
 data class Res(
-
 	@field:SerializedName("res")
 	val res: List<ResItem?>? = null
 )
+
 
 data class Payer(
 
@@ -55,3 +56,4 @@ data class Payer(
 	@field:SerializedName("email")
 	val email: String? = null
 )
+

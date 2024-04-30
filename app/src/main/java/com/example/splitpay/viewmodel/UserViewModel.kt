@@ -152,11 +152,13 @@ class UserViewModel:ViewModel() {
         }
     }
 
+
     fun getsettlement(groupId:Int){
         viewModelScope.launch {
             AuthUserRepository.getsettlement(groupId)
         }
     }
+
     fun validateInput(name:String,email:String,password:String):Pair<Boolean,String>{
         var result=Pair(true,"")
         if(   TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){

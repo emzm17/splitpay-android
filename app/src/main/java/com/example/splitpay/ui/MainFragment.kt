@@ -82,7 +82,9 @@ class MainFragment : Fragment() {
                                  findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
                                  dialog.dismiss()
                              }
+
                              builder.setNegativeButton("No"){ dialog: DialogInterface, i:Int->
+
                                  dialog.dismiss()
                              }
                              val alertDialog=builder.create()
@@ -100,7 +102,9 @@ class MainFragment : Fragment() {
         tokenManager.saveToken("","",-1,"")
     }
 
-
+    private fun clearSession() {
+              tokenManager.saveToken("","",-1,"")
+    }
 
 
     @SuppressLint("SetTextI18n")

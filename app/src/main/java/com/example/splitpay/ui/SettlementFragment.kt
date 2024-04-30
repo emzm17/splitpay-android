@@ -1,7 +1,6 @@
 package com.example.splitpay.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,15 +49,19 @@ class SettlementFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
+
                     adapter.submitList(i.data!!.data!!.res)
+
                 }
                 is NetworkResult.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
+
                 is NetworkResult.Error ->{
 
                 }
+
             }
         }
     }

@@ -1,7 +1,5 @@
 package com.example.splitpay.adapter
 
-
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,15 +9,18 @@ import com.example.splitpay.databinding.SettlementItemBinding
 import com.example.splitpay.models.ResItem
 
 
+
 class SettlementAdapter(): ListAdapter<ResItem, SettlementAdapter.SettlementViewHolder>(ComparatorDiffUtil()) {
 
 
 
     inner class SettlementViewHolder(private val binding: SettlementItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(item:ResItem){
+
             binding.name1tv.text= item.payer!!.name
             binding.name2tv.text= item.payee!!.name
             binding.amounttv.text="₹ ${item.amount.toString()}"
+
 
         }
     }
@@ -43,6 +44,7 @@ class SettlementAdapter(): ListAdapter<ResItem, SettlementAdapter.SettlementView
 
 
         override fun areItemsTheSame(oldItem: ResItem, newItem: ResItem): Boolean {
+
             return oldItem==newItem
         }
 
@@ -53,3 +55,4 @@ class SettlementAdapter(): ListAdapter<ResItem, SettlementAdapter.SettlementView
 
 
 }
+
