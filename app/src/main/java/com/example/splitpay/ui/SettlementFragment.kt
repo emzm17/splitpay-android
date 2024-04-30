@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.splitpay.R
 import com.example.splitpay.adapter.SettlementAdapter
-import com.example.splitpay.databinding.FragmentExpenseBinding
 import com.example.splitpay.databinding.FragmentSettlementBinding
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
@@ -38,7 +36,8 @@ class SettlementFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter= SettlementAdapter()
         val id=arguments?.getInt("groupID")
-        userViewModel.settlement(id!!.toInt())
+        Log.i("settlement",id.toString())
+        userViewModel.getsettlement(id!!.toInt())
         binding.settlementList.layoutManager= LinearLayoutManager(requireContext())
         binding.settlementList.adapter=adapter
         observer()
@@ -50,13 +49,19 @@ class SettlementFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
-                    adapter.submitList(i.data!!.res)
+
+                    adapter.submitList(i.data!!.data!!.res)
+
                 }
                 is NetworkResult.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+
+                is NetworkResult.Error ->{
+
+                }
+
             }
         }
     }

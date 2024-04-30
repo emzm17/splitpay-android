@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.splitpay.adapter.UserAdapter
+import com.example.splitpay.adapter.FriendsAdapter
 import com.example.splitpay.databinding.FragmentFriendsBinding
 import com.example.splitpay.models.User
 import com.example.splitpay.utils.NetworkResult
@@ -19,7 +19,7 @@ import com.example.splitpay.viewmodel.UserViewModel
 class FriendsFragment : Fragment() {
 
     private var _binding: FragmentFriendsBinding?=null
-    private lateinit var userAdapter: UserAdapter
+    private lateinit var friendsAdapter: FriendsAdapter
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
@@ -36,28 +36,26 @@ class FriendsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userAdapter = UserAdapter(::onItemClicked, false, tokenManager.getUserId())
+        friendsAdapter= FriendsAdapter()
         binding.friendrcview.layoutManager = LinearLayoutManager(requireContext())
-        binding.friendrcview.adapter = userAdapter
-        userViewModel.getUsers()
+        binding.friendrcview.adapter = friendsAdapter
+        userViewModel.getFriends()
         observers()
-    }
-
-    private fun onItemClicked(user: User){
-
     }
     private fun observers(){
         userViewModel._getUser.observe(viewLifecycleOwner)  { i->
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
-                    userAdapter.submitList(i.data)
+                   friendsAdapter.submitList(i.data!!.data)
                 }
                 is NetworkResult.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+
+                }
             }
         }
     }

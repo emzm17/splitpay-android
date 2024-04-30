@@ -40,7 +40,7 @@ object UserRepository {
     suspend fun loginUser(userSigninRequest: UserSigninRequest) {
         _userSigninLiveData.postValue(NetworkResult.Loading())
         val response = api.signin(userSigninRequest)
-
+        Log.i("login",response.body().toString())
         if (response.isSuccessful && response.body() != null) {
             _userSigninLiveData.postValue(NetworkResult.Success(response.body()!!))
         } else if (response.errorBody() != null) {

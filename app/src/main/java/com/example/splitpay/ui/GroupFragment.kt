@@ -22,7 +22,7 @@ import com.example.splitpay.viewmodel.UserViewModel
 
 
 class GroupFragment : Fragment() {
-    private var _binding: com.example.splitpay.databinding.FragmentGroupBinding?=null
+    private var _binding: FragmentGroupBinding?=null
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
@@ -53,10 +53,9 @@ class GroupFragment : Fragment() {
     }
 
 
-    private fun onItemClicked(groupResponse: GroupResponse){
-//        Toast.makeText(requireContext(),"hello world",Toast.LENGTH_SHORT).show()
+    private fun onItemClicked(ID:Int){
           val bundle=Bundle()
-          bundle.putInt("groupID",groupResponse.id!!.toInt())
+          bundle.putInt("groupID",ID)
           findNavController().navigate(R.id.action_groupFragment_to_expenseFragment,bundle)
     }
     private fun observe(){
@@ -65,14 +64,15 @@ class GroupFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
-                    adapter.submitList(i.data)
+                    adapter.submitList(i.data!!.data)
                 }
                 is NetworkResult.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
                 is NetworkResult.Error -> {
-                     Toast.makeText(requireContext(), i.message.toString(),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), i.message.toString(),Toast.LENGTH_SHORT).show()
+
                 }
 
             }

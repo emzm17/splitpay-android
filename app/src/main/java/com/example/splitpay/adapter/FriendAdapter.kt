@@ -6,20 +6,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.splitpay.databinding.UserItemBinding
-import com.example.splitpay.models.User
+import com.example.splitpay.models.DataItem
+import com.example.splitpay.models.UsersItem
+import kotlin.reflect.KFunction2
 
 
-class FriendAdapter(private val onItemClick: (Int) -> Unit) :ListAdapter<User,FriendAdapter.FriendViewHolder>(ComparatorDiffUtil()){
+class FriendAdapter(private val onItemClick: (Boolean,UsersItem)->Unit) :ListAdapter<DataItem,FriendAdapter.FriendViewHolder>(ComparatorDiffUtil()){
     inner class FriendViewHolder(private val binding:UserItemBinding):RecyclerView.ViewHolder(binding.root) {
-           fun bind(item:User){
+           fun bind(item:DataItem){
               binding.nametv.text=item.name
               binding.emailtv.text=item.email
+              val user=UsersItem(item.userId,item.name,item.email)
               binding.itemCheckbox.setOnCheckedChangeListener { _, isChecked ->
                      if(isChecked){
-                           onItemClick(item.userId!!.toInt())
+                         onItemClick(true,user)
                      }
                      else{
-                         onItemClick(-item.userId!!.toInt())
+                         onItemClick(false,user)
                      }
               }
            }
@@ -39,14 +42,13 @@ class FriendAdapter(private val onItemClick: (Int) -> Unit) :ListAdapter<User,Fr
             holder.bind(it)
         }
     }
-    class ComparatorDiffUtil: DiffUtil.ItemCallback<User>() {
-
-        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem.userId == newItem.userId
+    class ComparatorDiffUtil: DiffUtil.ItemCallback<DataItem>() {
+        override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+             return oldItem.userId==newItem.userId
         }
 
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem == newItem
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+           return oldItem==newItem
         }
     }
 }

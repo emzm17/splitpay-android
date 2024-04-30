@@ -6,8 +6,10 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.splitpay.models.DataItem
 import com.example.splitpay.models.ExpenseRequest
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.FriendRequest
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
@@ -24,15 +26,18 @@ import kotlinx.coroutines.launch
 
 class UserViewModel:ViewModel() {
 
-    val _getAllUser: LiveData<NetworkResult<ArrayList<User>>>
+    val _getAllUser: LiveData<NetworkResult<User>>
         get() = AuthUserRepository.getAllUserLiveData
-    val _getUser: LiveData<NetworkResult<ArrayList<User>>>
+    val _getUser: LiveData<NetworkResult<User>>
         get() = AuthUserRepository.getUserLiveData
-    val _getAllUserGroup:LiveData<NetworkResult<ArrayList<GroupResponse>>>
+    val _getAllUserGroup:LiveData<NetworkResult<GroupResponse>>
         get() = AuthUserRepository.getAllUserGroupsLiveData
 
-    val _getAllExpense:LiveData<NetworkResult<ArrayList<ExpenseResponse>>>
+    val _getAllExpense:LiveData<NetworkResult<ExpenseResponse>>
         get() = AuthUserRepository.getAllExpenseLiveData
+
+    val _getparticularExpense:LiveData<NetworkResult<ExpenseResponse>>
+        get() = AuthUserRepository.getparticularExpenseLiveData
 
     val _getAllGroup:LiveData<NetworkResult<ArrayList<GroupResponse>>>
         get() = AuthUserRepository.getAllGroupsLiveData
@@ -54,7 +59,7 @@ class UserViewModel:ViewModel() {
     val _sendfriendRequest:LiveData<NetworkResult<FriendRequestResponse>>
         get() = AuthUserRepository.friendrequest
 
-    val _getfriendRequest:LiveData<NetworkResult<ArrayList<User>>>
+    val _getfriendRequest:LiveData<NetworkResult<FriendRequest>>
         get() = AuthUserRepository.getfriendrequest
 
     val _acceptfriendRequest:LiveData<NetworkResult<FriendRequestResponse>>
@@ -67,16 +72,17 @@ class UserViewModel:ViewModel() {
          viewModelScope.launch {
              AuthUserRepository.getAllUsers()
          }
+
     }
 
-    fun getUsers(){
+    fun getFriends(){
         viewModelScope.launch {
-            AuthUserRepository.getUsers()
+            AuthUserRepository.getFriends()
         }
     }
     fun getGroups(){
         viewModelScope.launch {
-             AuthUserRepository.getGroups()
+             AuthUserRepository.getuserGroups()
         }
     }
 
@@ -95,6 +101,12 @@ class UserViewModel:ViewModel() {
     fun getparticularGroup(id:Int){
         viewModelScope.launch {
              AuthUserRepository.getparticularGroups(id)
+        }
+    }
+
+    fun getparticularExpense(expenseId:Int){
+        viewModelScope.launch {
+             AuthUserRepository.getParticularExpense(expenseId)
         }
     }
 
@@ -140,10 +152,11 @@ class UserViewModel:ViewModel() {
         }
     }
 
-    fun settlement(groupId:Int){
-         viewModelScope.launch {
-              AuthUserRepository.settlement(groupId)
-         }
+
+    fun getsettlement(groupId:Int){
+        viewModelScope.launch {
+            AuthUserRepository.getsettlement(groupId)
+        }
     }
 
     fun validateInput(name:String,email:String,password:String):Pair<Boolean,String>{
@@ -159,6 +172,7 @@ class UserViewModel:ViewModel() {
         }
         return result
     }
+
 
 
 }

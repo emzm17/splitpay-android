@@ -1,6 +1,7 @@
 package com.example.splitpay.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.splitpay.adapter.UserAdapter
 import com.example.splitpay.databinding.FragmentUsersBinding
+import com.example.splitpay.models.DataItem
 import com.example.splitpay.models.User
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
@@ -24,7 +26,8 @@ class UsersFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
-    private lateinit var allUser:ArrayList<User>
+    private lateinit var allUser:ArrayList<DataItem>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,19 +54,22 @@ class UsersFragment : Fragment() {
 
             binding.progressBar.isVisible = false
             when (i) {
+
                 is NetworkResult.Success -> {
-                    userAdapter.submitList(i.data)
+                    userAdapter.submitList(i.data!!.data)
                 }
                 is NetworkResult.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+
+                }
             }
         }
     }
-    private fun onItemClicked(user: User){
-                userViewModel.sendFriendRequest(user.userId!!.toInt())
+    private fun onItemClicked(user: DataItem){
+                userViewModel.sendFriendRequest(user.userId!!)
                 observers1()
     }
 
@@ -72,13 +78,18 @@ class UsersFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
+                    Log.i("x1",i.data!!.message.toString())
                      Toast.makeText(requireContext(), i.data?.message,Toast.LENGTH_SHORT).show()
                 }
                 is NetworkResult.Loading -> {
+                    Log.i("x2",i.data?.message.toString())
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+                    Log.i("x3",i.message.toString())
+                    Toast.makeText(requireContext(), i.message,Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

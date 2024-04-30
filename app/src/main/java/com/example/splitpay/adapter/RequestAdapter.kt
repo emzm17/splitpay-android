@@ -11,29 +11,29 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.splitpay.databinding.UserItemBinding
+import com.example.splitpay.models.DataItem
+import com.example.splitpay.models.DataItem1
 import com.example.splitpay.models.User
 
 
-class RequestAdapter(private val onItemclick: (User) -> Unit): androidx.recyclerview.widget.ListAdapter<User, RequestAdapter.UserViewHolder>(ComparatorDiffUtil()) {
+class RequestAdapter(private val onItemclick: (DataItem1) -> Unit): androidx.recyclerview.widget.ListAdapter<DataItem1, RequestAdapter.UserViewHolder>(ComparatorDiffUtil()) {
 
 
     inner class UserViewHolder(private val binding: User1ItemBinding):RecyclerView.ViewHolder(binding.root){
-        fun bind(item:User){
+        fun bind(item:DataItem1){
             binding.addBtn.setOnClickListener {
                 onItemclick(item)
             }
-
             binding.nametv.text=item.name
             binding.emailtv.text=item.email
         }
     }
-    class ComparatorDiffUtil: DiffUtil.ItemCallback<User>() {
-
-        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+    class ComparatorDiffUtil: DiffUtil.ItemCallback<DataItem1>() {
+        override fun areItemsTheSame(oldItem: DataItem1, newItem: DataItem1): Boolean {
             return oldItem.userId == newItem.userId
         }
 
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        override fun areContentsTheSame(oldItem: DataItem1, newItem: DataItem1): Boolean {
             return oldItem == newItem
         }
     }

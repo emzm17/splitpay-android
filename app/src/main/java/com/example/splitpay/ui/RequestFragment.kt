@@ -14,6 +14,7 @@ import com.example.splitpay.adapter.RequestAdapter
 import com.example.splitpay.adapter.UserAdapter
 import com.example.splitpay.databinding.FragmentRequestBinding
 import com.example.splitpay.databinding.FragmentUsersBinding
+import com.example.splitpay.models.DataItem1
 import com.example.splitpay.models.User
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
@@ -46,7 +47,7 @@ class RequestFragment : Fragment() {
         userViewModel.getFriendRequest()
         observers()
     }
-    private fun onItemClicked(user: User){
+    private fun onItemClicked(user:DataItem1){
         userViewModel.acceptFriendRequest(user.userId!!.toInt())
         observers1()
     }
@@ -61,7 +62,8 @@ class RequestFragment : Fragment() {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {}
+
             }
         }
     }
@@ -72,13 +74,16 @@ class RequestFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
-                    requestAdapter.submitList(i.data)
+                    requestAdapter.submitList(i.data!!.data)
                 }
                 is NetworkResult.Loading -> {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+
+                }
+
             }
         }
     }

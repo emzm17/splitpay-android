@@ -2,6 +2,7 @@ package com.example.splitpay.api
 
 import com.example.splitpay.models.ExpenseRequest
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.FriendRequest
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
@@ -31,14 +32,14 @@ interface UserApi {
   @GET("users/{id}")
   suspend fun getparticularUser(@Path("id")id:Int):Response<UserResponse>
   @GET("users/")
-  suspend fun getAllUser():Response<ArrayList<User>>
+  suspend fun getAllUser():Response<User>
 
 
 
 
 
   @GET("friends/")
-  suspend fun getAllFriends():Response<ArrayList<User>>
+  suspend fun getAllFriends():Response<User>?=null
 
 
   @POST("friends/send-friend-request/{userId}")
@@ -50,14 +51,14 @@ interface UserApi {
 
 
   @GET("friends/friend-request")
-  suspend fun getfriendRequest():Response<ArrayList<User>>
+  suspend fun getfriendRequest():Response<FriendRequest>
 
 
 
 
 
   @GET("groups/")
-  suspend fun getAllUserGroups():Response<ArrayList<GroupResponse>>
+  suspend fun getAllUserGroups():Response<GroupResponse>
 
   @GET("groups/all")
   suspend fun getAllGroups():Response<ArrayList<GroupResponse>>
@@ -72,10 +73,10 @@ interface UserApi {
 
 
   @GET("expenses/{id}")
-  suspend fun getAllExpenseGroup(@Path("id")id:Int):Response<ArrayList<ExpenseResponse>>
+  suspend fun getAllExpenseGroup(@Path("id")id:Int):Response<ExpenseResponse>
 
   @GET("expenses/particular/{id}")
-  suspend fun getparticularExpense(@Path("id")id:Int):Response<ArrayList<ExpenseResponse>>
+  suspend fun getparticularExpense(@Path("id")id:Int):Response<ExpenseResponse>
 
 
   @POST("expenses/create")
@@ -89,14 +90,8 @@ interface UserApi {
 
 
 
- @GET("settlement/{id}")
- suspend fun getsettlement(@Path("id")id:Int):Response<SettlementResponse>
-
-
-
-
-
-
+  @GET("settlement/{id}")
+  suspend fun getsettlement(@Path("id")id:Int):Response<SettlementResponse>
 
 
 

@@ -14,10 +14,10 @@ import com.example.splitpay.R
 import com.example.splitpay.adapter.FriendAdapter
 import com.example.splitpay.databinding.FragmentCreateGroupBinding
 import com.example.splitpay.models.GroupRequest
+import com.example.splitpay.models.UsersItem
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
-import kotlin.math.abs
 
 class CreateGroupFragment : Fragment() {
     private var _binding: FragmentCreateGroupBinding?=null
@@ -25,7 +25,7 @@ class CreateGroupFragment : Fragment() {
     private lateinit var tokenManager: TokenManager
     private lateinit var  userViewModel: UserViewModel
     private lateinit var friendAdapter: FriendAdapter
-    private lateinit var friendList:ArrayList<Int>
+    private lateinit var friendList:ArrayList<UsersItem>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,15 +39,13 @@ class CreateGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userViewModel.getUsers()
+        userViewModel.getFriends()
         friendList= ArrayList()
         friendAdapter= FriendAdapter(::onItemClick)
         binding.friendrcview.layoutManager= LinearLayoutManager(requireContext())
         binding.friendrcview.adapter=friendAdapter
-        userViewModel._getUser.observe(viewLifecycleOwner) {
-                       friendAdapter.submitList(it.data)
-        }
 
+        observers1()
 
 
         binding.submitBtn.setOnClickListener {
@@ -59,23 +57,41 @@ class CreateGroupFragment : Fragment() {
 
     }
 
-    private fun onItemClick(userId:Int) {
-           if(userId>0){
-               Toast.makeText(requireContext(),"${userId} added to group", Toast.LENGTH_LONG).show()
-               friendList.add(userId)
+    private fun observers1() {
+        userViewModel._getUser.observe(viewLifecycleOwner) {
+           when(it){
+                  is NetworkResult.Success->{
+                          friendAdapter.submitList(it.data!!.data)
+                  }
+
+               is NetworkResult.Error -> {
+                    Toast.makeText(requireContext(),"${it.message}",Toast.LENGTH_SHORT).show()
+               }
+               is NetworkResult.Loading -> {
+
+               }
+           }
+
+
+        }
+    }
+
+    private fun onItemClick(check:Boolean,user:UsersItem) {
+           if(check){
+               Toast.makeText(requireContext(),"${user.name} added to group", Toast.LENGTH_LONG).show()
+               friendList.add(user)
            }
            else{
-               Toast.makeText(requireContext(),"${abs(userId)} remove to group", Toast.LENGTH_LONG).show()
-               friendList.remove(abs(userId))
+               Toast.makeText(requireContext(),"${user.name} remove to group", Toast.LENGTH_LONG).show()
+               friendList.remove(user)
            }
 
     }
 
     private fun getGroupRequest():GroupRequest{
           val name=binding.txtName.text
-          val users_id=friendList
-          val createdby=tokenManager.getUserId()
-        return GroupRequest(name.toString(),users_id,createdby)
+          val users=friendList
+        return GroupRequest(name.toString(),users)
     }
     private fun observers(){
         userViewModel._createGroupLiveData.observe(viewLifecycleOwner, Observer {

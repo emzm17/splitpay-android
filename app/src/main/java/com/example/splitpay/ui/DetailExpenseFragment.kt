@@ -3,15 +3,21 @@ package com.example.splitpay.ui
 import android.R
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.splitpay.databinding.FragmentDetailExpenseBinding
 import com.example.splitpay.models.ExpenseResponse
+import com.example.splitpay.models.UsersItem
+import com.example.splitpay.models.__DataItem
 import com.example.splitpay.utils.Constants
+import com.example.splitpay.utils.Constants.userMap
+import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.viewmodel.UserViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -38,22 +44,38 @@ class DetailExpenseFragment : Fragment() {
         setData()
         val groupId=arguments?.getString("expenseGroup")
         userViewModel= ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
-        userViewModel._getAllGroup.observe(viewLifecycleOwner){
-             it.data?.forEach {
-                      if(it.id==groupId?.toInt()){
-                             it.usersId?.forEach { i->
-                                 friendlist.add(Constants.userNamemap[i]!!)
-                             }
+        userViewModel.getparticularGroup(groupId!!.toInt())
+        observe()
 
-                      }
-             }
-        }
 
-        val adapter= ArrayAdapter(requireContext(), R.layout.simple_list_item_1,friendlist)
-        binding.expenselistview.adapter=adapter
+
 
 
     }
+
+    private fun observe() {
+        userViewModel._getparticularGroup.observe(viewLifecycleOwner) { it ->
+            when(it){
+                is NetworkResult.Error -> {
+
+                }
+                is NetworkResult.Loading -> {
+
+                }
+                is NetworkResult.Success -> {
+                          friendlist.clear()
+                          it.data!!.data!!.forEach{
+                               it!!.users!!.forEach { i->
+                                   friendlist.add(i!!.name.toString())
+                               }
+
+                      }
+                    val adapter= ArrayAdapter(requireContext(), R.layout.simple_list_item_1,friendlist)
+                    binding.expenselistview.adapter=adapter
+                    }
+                }
+            }
+        }
 
     @SuppressLint("SetTextI18n")
     private fun setData() {

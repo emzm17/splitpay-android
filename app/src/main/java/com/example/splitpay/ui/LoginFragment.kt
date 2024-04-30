@@ -58,8 +58,8 @@ class LoginFragment : Fragment() {
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
-                    tokenManager.saveToken(i.data?.result.toString(),
-                        i.data!!.email.toString(), i.data.userId, i.data.name.toString()
+                    tokenManager.saveToken(i.data?.data?.token.toString(),
+                        i.data?.data?.email.toString(), i.data?.data?.userId, i.data?.data?.name.toString()
                     )
                   findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
 

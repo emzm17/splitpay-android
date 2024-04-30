@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,10 +19,12 @@ import com.example.splitpay.R
 
 import com.example.splitpay.databinding.FragmentMainBinding
 import com.example.splitpay.models.UserResponse
+import com.example.splitpay.utils.Constants
 import com.example.splitpay.utils.Constants.TAG
 import com.example.splitpay.utils.NetworkResult
 import com.example.splitpay.utils.TokenManager
 import com.example.splitpay.viewmodel.UserViewModel
+import java.text.DecimalFormat
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding?=null
@@ -79,7 +82,9 @@ class MainFragment : Fragment() {
                                  findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
                                  dialog.dismiss()
                              }
-                             builder.setNegativeButton("No"){ dialog:DialogInterface,i:Int->
+
+                             builder.setNegativeButton("No"){ dialog: DialogInterface, i:Int->
+
                                  dialog.dismiss()
                              }
                              val alertDialog=builder.create()
@@ -91,27 +96,34 @@ class MainFragment : Fragment() {
         }
         userViewModel.getparticularUser(tokenManager.getUserId())
 
+
+    }
+    private fun clearSession() {
+        tokenManager.saveToken("","",-1,"")
     }
 
     private fun clearSession() {
               tokenManager.saveToken("","",-1,"")
     }
 
+
+    @SuppressLint("SetTextI18n")
     private fun observers(){
+        val decimalFormat = DecimalFormat("#.00")
         userViewModel._getparticularUser.observe(viewLifecycleOwner)  { i->
             binding.progressBar.isVisible = false
             when (i) {
                 is NetworkResult.Success -> {
                     binding.dashboard.isVisible=true
                     binding.usernameTv.isVisible=true
-                    binding.totalAmountTv.text = "₹ ${i.data!!.totalAmount}"
-                    binding.totalOweTv.text = "₹ ${i.data.totalOwe}"
-                    binding.totalOwedTv.text = "₹ ${i.data.totalOwed}"
-                    binding.usernameTv.text = "Welcome back,${i.data.name}"
+                    binding.totalAmountTv.text = "₹ ${i.data?.data?.totalAmount}"
+                    binding.totalOweTv.text = "₹ ${i.data?.data?.totalOwe}"
+                    binding.totalOwedTv.text = "₹ ${i.data?.data?.totalOwed}"
+                    binding.usernameTv.text = "Welcome back,${i.data?.data?.name}"
                 }
 
                 is NetworkResult.Error -> {
-
+                    Toast.makeText(context, "Error: ${i.message.toString()}", Toast.LENGTH_SHORT).show()
                 }
 
                 is NetworkResult.Loading -> {

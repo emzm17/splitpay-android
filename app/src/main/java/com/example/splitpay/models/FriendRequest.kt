@@ -2,10 +2,10 @@ package com.example.splitpay.models
 
 import com.google.gson.annotations.SerializedName
 
-data class UserSigninResponse(
+data class FriendRequest(
 
 	@field:SerializedName("data")
-	val data: Data? = null,
+	val data: List<DataItem1>? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null,
@@ -14,7 +14,7 @@ data class UserSigninResponse(
 	val status: String? = null
 )
 
-data class Data(
+data class DataItem1(
 
 	@field:SerializedName("user_id")
 	val userId: Int? = null,
@@ -23,8 +23,5 @@ data class Data(
 	val name: String? = null,
 
 	@field:SerializedName("email")
-	val email: String? = null,
-
-	@field:SerializedName("token")
-	val token: String? = null
+	val email: String? = null
 )

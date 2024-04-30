@@ -6,14 +6,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.splitpay.databinding.UserItemBinding
-import com.example.splitpay.models.User
+import com.example.splitpay.models.DataItem
+import kotlin.reflect.KFunction1
 
 
-class UserAdapter(private val onItemclick: (User) -> Unit, private val isShow: Boolean, private val userId: Int): androidx.recyclerview.widget.ListAdapter<User, UserAdapter.UserViewHolder>(ComparatorDiffUtil()) {
+class UserAdapter(private val onItemclick: KFunction1<DataItem, Unit>, private val isShow: Boolean, private val userId: Int): androidx.recyclerview.widget.ListAdapter<DataItem, UserAdapter.UserViewHolder>(ComparatorDiffUtil()) {
 
 
     inner class UserViewHolder(private val binding:UserItemBinding):RecyclerView.ViewHolder(binding.root){
-             fun bind(item:User){
+             fun bind(item:DataItem){
                   if(isShow){
                       binding.itemCheckbox.visibility= View.GONE
                       binding.addBtn.visibility=View.VISIBLE
@@ -34,14 +35,14 @@ class UserAdapter(private val onItemclick: (User) -> Unit, private val isShow: B
                   binding.emailtv.text=item.email
              }
     }
-    class ComparatorDiffUtil: DiffUtil.ItemCallback<User>() {
+    class ComparatorDiffUtil: DiffUtil.ItemCallback<DataItem>() {
 
-        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem.userId == newItem.userId
+        override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+           return oldItem.userId==newItem.userId
         }
 
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem == newItem
+        override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+            return oldItem==newItem
         }
     }
 
@@ -53,7 +54,7 @@ class UserAdapter(private val onItemclick: (User) -> Unit, private val isShow: B
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val item=getItem(position)
         item.let {
-            holder.bind(it)
+             holder.bind(it)
         }
     }
 }
