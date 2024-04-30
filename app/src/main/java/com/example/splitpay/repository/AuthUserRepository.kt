@@ -12,6 +12,7 @@ import com.example.splitpay.models.FriendRequest
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
+import com.example.splitpay.models.SettlementResponse
 import com.example.splitpay.models.User
 import com.example.splitpay.models.UserResponse
 import com.example.splitpay.models.UserSignupRequest
@@ -88,10 +89,15 @@ object AuthUserRepository {
         get() = _getFriendrequest
 
 
+    private val _getSettlement=MutableLiveData<NetworkResult<SettlementResponse>>()
+    val settlement:LiveData<NetworkResult<SettlementResponse>>
+        get() = _getSettlement
+
+
     suspend fun getAllUsers(){
          _getAllUserLiveData.postValue(NetworkResult.Loading())
          val response=api2.getAllUser()
-
+         Log.i("all users",response.body().toString())
         if (response.isSuccessful && response.body() != null) {
            _getAllUserLiveData.postValue(NetworkResult.Success(response.body()!!))
             Log.i("madar",response.body().toString())
@@ -289,4 +295,18 @@ object AuthUserRepository {
         }
 
      }
+    suspend fun  getsettlement(groupId:Int){
+        _getSettlement.postValue(NetworkResult.Loading())
+        val response= api2.getsettlement(groupId)
+        if(response.isSuccessful && response.body()!=null){
+            _getSettlement.postValue(NetworkResult.Success(response.body()!!))
+        }
+        else if(response.isSuccessful && response.body()!=null){
+            val errorObj = JSONObject(response.errorBody()!!.charStream().readText())
+            _getSettlement.postValue(NetworkResult.Error(errorObj.getString("message")))
+        }
+        else{
+            _getSettlement.postValue(NetworkResult.Error("something went wrong"))
+        }
+    }
 }

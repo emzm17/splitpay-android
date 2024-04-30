@@ -70,7 +70,10 @@ class ExpenseFragment : Fragment() {
 
         }
         binding.settlementBtn.setOnClickListener {
-
+            val id = arguments?.getInt("groupID")
+            val bundle = Bundle()
+            bundle.putInt("groupID", id!!);
+               findNavController().navigate(R.id.action_expenseFragment_to_settlementFragment,bundle)
         }
         binding.addExpense.setOnClickListener {
             val id = arguments?.getInt("groupID")

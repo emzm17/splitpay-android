@@ -62,7 +62,9 @@ class UsersFragment : Fragment() {
                     binding.progressBar.isVisible = true
                 }
 
-                is NetworkResult.Error -> TODO()
+                is NetworkResult.Error -> {
+
+                }
             }
         }
     }

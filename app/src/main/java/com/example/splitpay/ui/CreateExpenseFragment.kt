@@ -69,7 +69,7 @@ class CreateExpenseFragment : Fragment() {
             when(it){
                 is NetworkResult.Success->{
                     Toast.makeText(requireContext(),"expense created successfully", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_createExpenseFragment_to_groupFragment)
+                    findNavController().navigate(R.id.action_createExpenseFragment_to_expenseFragment)
                 }
                 is NetworkResult.Error->{
                     Toast.makeText(requireContext(),"something went wrong", Toast.LENGTH_SHORT).show()

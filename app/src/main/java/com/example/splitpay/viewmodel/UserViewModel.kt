@@ -13,6 +13,7 @@ import com.example.splitpay.models.FriendRequest
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
+import com.example.splitpay.models.SettlementResponse
 import com.example.splitpay.models.User
 import com.example.splitpay.models.UserResponse
 import com.example.splitpay.models.UserSigninResponse
@@ -63,6 +64,9 @@ class UserViewModel:ViewModel() {
 
     val _acceptfriendRequest:LiveData<NetworkResult<FriendRequestResponse>>
         get() = AuthUserRepository.acceptfriend
+
+    val _getsettlement:LiveData<NetworkResult<SettlementResponse>>
+        get() = AuthUserRepository.settlement
 
     fun getAllUsers(){
          viewModelScope.launch {
@@ -145,6 +149,12 @@ class UserViewModel:ViewModel() {
     fun getFriendRequest(){
         viewModelScope.launch {
              AuthUserRepository.getFriendRequest()
+        }
+    }
+
+    fun getsettlement(groupId:Int){
+        viewModelScope.launch {
+            AuthUserRepository.getsettlement(groupId)
         }
     }
     fun validateInput(name:String,email:String,password:String):Pair<Boolean,String>{

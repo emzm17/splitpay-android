@@ -93,6 +93,9 @@
         <action
             android:id="@+id/action_expenseFragment_to_detailExpenseFragment"
             app:destination="@id/detailExpenseFragment" />
+        <action
+            android:id="@+id/action_expenseFragment_to_settlementFragment"
+            app:destination="@id/settlementFragment" />
     </fragment>
     <fragment
         android:id="@+id/createGroupFragment"
@@ -101,7 +104,7 @@
         tools:layout="@layout/fragment_create_group" >
         <action
             android:id="@+id/action_createGroupFragment_to_groupFragment"
-            app:popUpTo="@id/createGroupFragment"
+            app:popUpTo="@id/groupFragment"
             app:popUpToInclusive="true"
             app:destination="@id/groupFragment" />
     </fragment>
@@ -111,7 +114,9 @@
         android:label="fragment_create_expense"
         tools:layout="@layout/fragment_create_expense">
         <action
-            android:id="@+id/action_createExpenseFragment_to_groupFragment"
+            android:id="@+id/action_createExpenseFragment_to_expenseFragment"
+            app:popUpTo="@id/groupFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/groupFragment" />
     </fragment>
     <fragment
@@ -129,4 +134,10 @@
         android:name="com.example.splitpay.ui.UsersFragment"
         android:label="fragment_users"
         tools:layout="@layout/fragment_users" />
+    <fragment
+        android:id="@+id/settlementFragment"
+        android:name="com.example.splitpay.ui.SettlementFragment"
+        android:label="fragment_settlement"
+        tools:layout="@layout/fragment_settlement">
+    </fragment>
 </navigation>

@@ -6,6 +6,7 @@ import com.example.splitpay.models.FriendRequest
 import com.example.splitpay.models.FriendRequestResponse
 import com.example.splitpay.models.GroupRequest
 import com.example.splitpay.models.GroupResponse
+import com.example.splitpay.models.SettlementResponse
 import com.example.splitpay.models.User
 import com.example.splitpay.models.UserResponse
 import com.example.splitpay.models.UserSigninRequest
@@ -89,7 +90,8 @@ interface UserApi {
 
 
 
-
+  @GET("settlement/{id}")
+  suspend fun getsettlement(@Path("id")id:Int):Response<SettlementResponse>
 
 
 
